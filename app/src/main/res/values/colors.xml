@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="sudoBackground">#ffe6f0ff</color>
+    <color name="sudoWhite">#ffffff</color>
+    <color name="sudoLight">#64c6d4ef</color>
+    <color name="sudoDark">#6456648f</color>
+
+</resources>
