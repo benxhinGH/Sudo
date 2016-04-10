@@ -7,5 +7,6 @@
     <color name="sudoWhite">#ffffff</color>
     <color name="sudoLight">#64c6d4ef</color>
     <color name="sudoDark">#6456648f</color>
+    <color name="purple">#7C2C90</color>
 
 </resources>

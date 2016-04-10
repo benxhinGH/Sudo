@@ -4,8 +4,12 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
+import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+
+
 
 /**
  * Created by Administrator on 2016/4/6 0006.
@@ -16,9 +20,16 @@ public class SudoView extends View{
     private float height;
     private int selectedX;
     private int selectedY;
+    private Context mContext;
     Game game=new Game();
     public SudoView(Context context){
         super(context);
+        mContext=context;
+
+    }
+    public SudoView(Context context,AttributeSet attrs){
+        super(context,attrs);
+        mContext=context;
     }
     @Override
     protected void onSizeChanged(int w,int h,int oldw,int oldh){
@@ -26,6 +37,8 @@ public class SudoView extends View{
         this.height=h/9f;
         super.onSizeChanged(w, h, oldw, oldh);
     }
+
+
     @Override
     protected void onDraw(Canvas canvas){
         Paint backgroundPaint=new Paint();
@@ -78,9 +91,11 @@ public class SudoView extends View{
         selectedX=(int)(event.getX()/width);
         selectedY=(int)(event.getY()/height);
 
+        if(!game.ifIsDefault(selectedX,selectedY)){
+            KeyDialog keyDialog=new KeyDialog(getContext(),this);
+            keyDialog.show();
+        }
 
-        KeyDialog keyDialog=new KeyDialog(getContext(),this);
-        keyDialog.show();
 
         return true;
 
@@ -92,4 +107,5 @@ public class SudoView extends View{
         game.setNum(selectedX,selectedY,num);
         invalidate();
     }
+
 }

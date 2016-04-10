@@ -7,5 +7,15 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+    <style name="MyTitleBackground">
+        <item name="android:background">@color/purple</item>
+    </style>
+    <style name="MyTitle" parent="android:Theme">
+        <item name="android:windowTitleSize">50dp</item>
+        <item name="android:windowTitleBackgroundStyle">@style/MyTitleBackground</item>
+    </style>
+    <style name="MyAppTheme" parent="android:Theme.Light">
+
+    </style>
 
 </resources>
