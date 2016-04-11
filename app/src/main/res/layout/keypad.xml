@@ -38,5 +38,10 @@
             android:id="@+id/keypad_9"
             android:text="9"/>
     </TableRow>
+    <TableRow>
+        <Button
+            android:id="@+id/clear"
+            android:text="清空"/>
+    </TableRow>
 
 </TableLayout>

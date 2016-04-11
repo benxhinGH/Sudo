@@ -10,7 +10,7 @@ import android.view.View;
  */
 public class KeyDialog extends Dialog {
 
-    private final View keys[]=new View[9];
+    private final View keys[]=new View[10];
 
     private SudoView sudoView;
 
@@ -40,6 +40,8 @@ public class KeyDialog extends Dialog {
         keys[6]=findViewById(R.id.keypad_7);
         keys[7]=findViewById(R.id.keypad_8);
         keys[8]=findViewById(R.id.keypad_9);
+        keys[9]=findViewById(R.id.clear);
+
 
     }
 

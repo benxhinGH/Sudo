@@ -23,8 +23,9 @@ import org.w3c.dom.Text;
 public class MainActivity extends Activity {
 
     private Button completeButton;
-    private Game game=new Game();
+
     private SudoView sudoView;
+    private Button resetButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,14 @@ public class MainActivity extends Activity {
                 }
             }
         });
+        resetButton=(Button)findViewById(R.id.reset_button);
+        resetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sudoView.resetGame();
+            }
+        });
+
 
 
 

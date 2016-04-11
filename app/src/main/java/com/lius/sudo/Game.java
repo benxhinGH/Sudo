@@ -44,7 +44,8 @@ public class Game {
     }
 
     public void setNum(int x, int y, int num){
-        sudoku[y*9+x].setValue(num);
+        if(num==10)sudoku[y*9+x].setValue(0);
+        else sudoku[y*9+x].setValue(num);
     }
     public boolean ifIsDefault(int x,int y){
         return sudoku[x+y*9].getIsDefault();
@@ -98,5 +99,11 @@ public class Game {
             if(numbers[i]!=i+1)return false;
         }
         return true;
+    }
+
+    public void resetSudoku(){
+        for(Number n:sudoku){
+            if(!n.getIsDefault())n.setValue(0);
+        }
     }
 }

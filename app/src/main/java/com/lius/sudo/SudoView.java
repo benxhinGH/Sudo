@@ -66,10 +66,16 @@ public class SudoView extends View{
             canvas.drawLine(i*width+1,0,i*width+1,getHeight(),whitePaint);
         }
         Paint numberPaint=new Paint();
-        numberPaint.setColor(Color.BLACK);
+        numberPaint.setColor(getResources().getColor(R.color.light_purple));
         numberPaint.setStyle(Paint.Style.STROKE);
         numberPaint.setTextSize(height * 0.75f);
         numberPaint.setTextAlign(Paint.Align.CENTER);
+
+        Paint userNumberPaint=new Paint();
+        userNumberPaint.setColor(Color.BLACK);
+        userNumberPaint.setStyle(Paint.Style.STROKE);
+        userNumberPaint.setTextSize(height * 0.75f);
+        userNumberPaint.setTextAlign(Paint.Align.CENTER);
 
         //使用Paint获取FontMetrics对象，下面计算y的公式是使字符在单元格中居中的算法
         Paint.FontMetrics fm=numberPaint.getFontMetrics();
@@ -77,8 +83,14 @@ public class SudoView extends View{
         float y=height/2-(fm.ascent+fm.descent)/2;
 
         for(int i=0;i<9;++i)
-            for(int j=0;j<9;++j)
-                canvas.drawText(game.getNumberString(i,j),i*width+x,j*height+y,numberPaint);
+            for(int j=0;j<9;++j){
+                if(game.ifIsDefault(i,j)){
+                    canvas.drawText(game.getNumberString(i,j),i*width+x,j*height+y,numberPaint);
+                }else{
+                    canvas.drawText(game.getNumberString(i,j),i*width+x,j*height+y,userNumberPaint);
+                }
+            }
+
         super.onDraw(canvas);
     }
 
@@ -104,6 +116,11 @@ public class SudoView extends View{
 
     public void setSelectedNum(int num){
         game.setNum(selectedX,selectedY,num);
+        invalidate();
+    }
+
+    public void resetGame(){
+        game.resetSudoku();
         invalidate();
     }
 
