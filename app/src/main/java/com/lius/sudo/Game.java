@@ -1,5 +1,7 @@
 package com.lius.sudo;
 
+import android.util.Log;
+
 /**
  * Created by Administrator on 2016/4/6 0006.
  */
@@ -47,12 +49,54 @@ public class Game {
     public boolean ifIsDefault(int x,int y){
         return sudoku[x+y*9].getIsDefault();
     }
-    private int[] getValueFromNumber(Number[] numbers){
-        int[] values=new int[numbers.length];
-        for(int i=0;i<numbers.length;++i)values[i]=numbers[i].getValue();
-        return values;
+
+    public boolean judgeResult(){
+        for(int x=0;x<9;++x){
+            while(!judgeOneToNine(sortOneToNine(getIntsByCoordinate(x, 0, x, 8))))return false;
+        }
+        for(int y=0;y<9;++y){
+            while(!judgeOneToNine(sortOneToNine(getIntsByCoordinate(0,y,8,y))))return false;
+        }
+        for(int startY=0;startY<=6;startY=startY+3)
+            for(int startX=0;startX<=6;startX=startX+3){
+                while(!judgeOneToNine((sortOneToNine(getIntsByCoordinate(startX,startY,
+                        startX+2,startY+2)))))return false;
+            }
+
+        return true;
     }
-    private boolean judgeResult(){
+    private int[] getIntsByCoordinate(int startX,int startY,int endX,int endY){
+        Log.d("getIntsByCoordinate","传入坐标为"+startX+startY+endX+endY);
+        int[] numbers=new int[9];
+        int i=0;
+        for(int y=startY;y<=endY;++y)
+            for(int x=startX;x<=endX;++x){
+                numbers[i]=getNumber(x,y);
+                ++i;
+            }
+        Log.d("getIntsByCoordinate","返回结果为"+numbers[0]+numbers[1]+numbers[2]+numbers[3]+numbers[4]
+        +numbers[5]+numbers[6]+numbers[7]+numbers[8]);
+        return numbers;
+    }
+    private int[] sortOneToNine(int[] numbers){
+        for(int i=0;i<9;++i){
+            for(int j=0;j<9-i-1;++j){
+                if(numbers[j]>numbers[j+1]){
+                    int n=numbers[j];
+                    numbers[j]=numbers[j+1];
+                    numbers[j+1]=n;
+                }
+            }
+        }
+        Log.d("sortOneToNine","返回结果为"+numbers[0]+numbers[1]+numbers[2]+numbers[3]+numbers[4]
+                +numbers[5]+numbers[6]+numbers[7]+numbers[8]);
+        return numbers;
+    }
+    private boolean judgeOneToNine(int[] numbers){
+
+        for(int i=0;i<9;++i){
+            if(numbers[i]!=i+1)return false;
+        }
         return true;
     }
 }

@@ -9,8 +9,10 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -20,11 +22,29 @@ import org.w3c.dom.Text;
  */
 public class MainActivity extends Activity {
 
+    private Button completeButton;
+    private Game game=new Game();
+    private SudoView sudoView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.main);
+        sudoView=(SudoView)findViewById(R.id.first_sudoview);
+        completeButton=(Button)findViewById(R.id.complete_button);
+        completeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(sudoView.game.judgeResult()){
+                    Toast.makeText(MainActivity.this,"恭喜过关！",Toast.LENGTH_SHORT).show();
+
+                }else{
+                    Toast.makeText(MainActivity.this,"存在错误！",Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        });
 
 
 
