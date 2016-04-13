@@ -6,13 +6,13 @@ import android.util.Log;
  * Created by Administrator on 2016/4/6 0006.
  */
 public class Game {
-    private final String str="360000000004230800000004200"
-            +"070460003820000014500013020"
-            +"001900000007048300000000045";
+    private String str;
+    private GenerateSudoku generateSudoku=new GenerateSudoku();
 
     private Number sudoku []=new Number[9*9];
 
     public Game(){
+        str=generateSudoku.getStringData();
         sudoku=fromPuzzleString(str);
     }
     private int getNumber(int x,int y){
@@ -105,5 +105,9 @@ public class Game {
         for(Number n:sudoku){
             if(!n.getIsDefault())n.setValue(0);
         }
+    }
+    public void generateByLevel(int level){
+        str=generateSudoku.changeLevel(level);
+        sudoku=fromPuzzleString(str);
     }
 }

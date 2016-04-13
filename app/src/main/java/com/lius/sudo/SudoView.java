@@ -123,6 +123,10 @@ public class SudoView extends View{
         game.resetSudoku();
         invalidate();
     }
+    public void changeLevel(int level){
+        game.generateByLevel(level);
+        invalidate();
+    }
 
 
 }
