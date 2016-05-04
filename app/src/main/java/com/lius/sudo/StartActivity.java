@@ -1,6 +1,7 @@
 package com.lius.sudo;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ public class StartActivity extends Activity{
     public static int level=1;
     private Button startGameButton;
     private Button levelButton;
+    private ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,8 +28,20 @@ public class StartActivity extends Activity{
         startGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(StartActivity.this,MainActivity.class);
-                startActivity(intent);
+                showProgressDialog();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        GenerateSudoku generateSudoku=new GenerateSudoku(level);
+                        String sudokuData=generateSudoku.getStringData();
+                        Intent intent=new Intent(StartActivity.this,MainActivity.class);
+                        intent.putExtra("data",sudokuData);
+                        closeProgressDialog();
+                        startActivity(intent);
+
+                    }
+                }).start();
+
             }
         });
         levelButton=(Button)findViewById(R.id.level_button);
@@ -64,6 +78,19 @@ public class StartActivity extends Activity{
 
             }
         });
+    }
+    private void showProgressDialog(){
+        if(progressDialog==null){
+            progressDialog=new ProgressDialog(this);
+            progressDialog.setMessage("waiting...");
+            progressDialog.setCanceledOnTouchOutside(false);
+        }
+        progressDialog.show();
+    }
+    private void closeProgressDialog(){
+        if(progressDialog!=null){
+            progressDialog.dismiss();
+        }
     }
 
 

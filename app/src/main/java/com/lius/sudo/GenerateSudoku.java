@@ -32,9 +32,6 @@ public class GenerateSudoku {
     private int level;
 
     private Random ran = new Random();
-    public GenerateSudoku(){
-        this(1);//默认等级为1
-    }
 
     public GenerateSudoku(int level) {
         Log.d("GenerateSudoku","从构造方法进入，开始出题,当前等级为"+level);
@@ -441,51 +438,7 @@ public class GenerateSudoku {
         return s;
     }
 
-    public String changeLevel(int level){
-        Log.d("GenerateSudoku","从changeLevel进入，出题等级为"+level+"开始出题");
-        for(int i=0;i<9;++i)
-            for(int j=0;j<9;++j)
-                sudokuData[i][j]=0;
 
-        if (level < 0 || level > 6) {
-            this.level = 3;
-        } else {
-            this.level = level;
-        }
-        switch (level) {
-            case 1:
-            case 2:
-                int ranNum = ran.nextInt(10);
-                if (ranNum > 4) {
-                    minKnow = 5;
-                } else {
-                    minKnow = 4;
-                }
-                minFilled = 45 + ranNum;
-                break;
-            case 3:
-                minFilled = 31 + ran.nextInt(10);
-                minKnow = 3;
-                break;
-            case 4:
-                minFilled = 21 + ran.nextInt(10);
-                minKnow = 2;
-                break;
-            case 5:
-                minFilled = 17 + ran.nextInt(10);
-                minKnow = 0;
-                break;
-            default:
-                break;
-        }
-        genSuduku();
-        orginData = new int[9][9];
-        for (int i = 0; i < 9; i++) {
-            System.arraycopy(sudokuData[i], 0, orginData[i], 0, 9);
-        }
-        Log.d("GenerateSudoku","从changeLevel进入，出题等级为"+level+"出题完毕");
-        return getStringData();
-    }
 
 }
 

@@ -6,13 +6,12 @@ import android.util.Log;
  * Created by Administrator on 2016/4/6 0006.
  */
 public class Game {
-    private String str;
-    private GenerateSudoku generateSudoku=new GenerateSudoku();
+    private String str="";
+    private GenerateSudoku generateSudoku;
 
     private Number sudoku []=new Number[9*9];
 
     public Game(){
-        str=generateSudoku.getStringData();
         sudoku=fromPuzzleString(str);
     }
     private int getNumber(int x,int y){
@@ -27,6 +26,15 @@ public class Game {
 
     //根据一个字符串生成一个整形数组，作为数独游戏的初始化数据
     protected Number[] fromPuzzleString(String src){
+        if(str.equals("")){
+            Number[] sudo=new Number[91];
+            for(int i=0;i<81;++i){
+                sudo[i]=new Number();
+                sudo[i].setIsDefault(true);
+                sudo[i].setValue(0);
+            }
+            return sudo;
+        }
         Number[] sudo=new Number[src.length()];
         for(int i=0;i<src.length();++i){
             //sudo数组中的每一个对象在使用前都要分派给他一个引用，否则会报NullPointerException
@@ -106,8 +114,10 @@ public class Game {
             if(!n.getIsDefault())n.setValue(0);
         }
     }
-    public void generateByLevel(int level){
-        str=generateSudoku.changeLevel(level);
+
+    public void setSudoku(String data){
+        str=data;
         sudoku=fromPuzzleString(str);
+
     }
 }

@@ -20,19 +20,19 @@ public class MainActivity extends Activity {
 
     private SudoView sudoView;
     private Button resetButton;
-    private int level;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.main);
-        level=StartActivity.level;
         sudoView=(SudoView)findViewById(R.id.first_sudoview);
+        String data=getIntent().getStringExtra("data");
+        sudoView.setSudoku(data);
 
-        if(level!=1){
-            sudoView.changeLevel(level);
-        }
+
+
         completeButton=(Button)findViewById(R.id.complete_button);
         completeButton.setOnClickListener(new View.OnClickListener() {
             @Override
