@@ -12,23 +12,27 @@
         android:textColor="@color/purple"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp"/>
-    <Button
-        android:layout_width="200dp"
+    <com.lius.sudo.LButton
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:minWidth="200dp"
         android:id="@+id/startgame_button"
         android:text="开始游戏"
-        android:layout_below="@id/nametextview"
-        android:layout_marginTop="30dp"
+        android:layout_below="@+id/nametextview"
         android:layout_centerHorizontal="true"
-        android:textSize="20dp"/>
-    <Button
-        android:layout_width="200dp"
+        android:layout_marginTop="30dp"
+        android:textSize="20dp"
+        android:textColor="#ffffff"/>
+    <com.lius.sudo.LButton
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:minWidth="200dp"
         android:id="@+id/level_button"
         android:text="当前等级：入门级"
         android:layout_below="@+id/startgame_button"
-        android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"
-        android:textSize="20dp"/>
+        android:layout_marginTop="10dp"
+        android:textSize="20dp"
+        android:textColor="#ffffff"/>
 
 </RelativeLayout>
