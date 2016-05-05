@@ -7,7 +7,7 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-
+import android.widget.Toast;
 
 
 /**
@@ -121,6 +121,7 @@ public class SudoView extends View{
 
     public void resetGame(){
         game.resetSudoku();
+        Toast.makeText(mContext,"已重置",Toast.LENGTH_SHORT).show();
         invalidate();
     }
     public void setSudoku(String data){
