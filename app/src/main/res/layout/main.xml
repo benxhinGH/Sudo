@@ -11,10 +11,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="菜牛数独"
-            android:textSize="25sp"
+            android:textSize="22sp"
             android:textColor="#ffffff"
             android:layout_centerVertical="true"
             android:paddingLeft="10dp"/>
+        <Button
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:id="@+id/save_button"
+            android:background="@drawable/save_button_img"
+            android:layout_toLeftOf="@+id/reset_button"
+            android:layout_centerVertical="true" />
         <Button
             android:layout_width="50dp"
             android:layout_height="wrap_content"

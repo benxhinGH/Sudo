@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -19,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.Map;
 
 
 /**
@@ -32,6 +34,7 @@ public class StartActivity extends Activity {
     public static int level = 1;
     private Button startGameButton;
     private Button levelButton;
+    private Button readArchiveButton;
     private Dialog mLoadingDialog;
     private Handler handler = new Handler() {
         @Override
@@ -68,6 +71,7 @@ public class StartActivity extends Activity {
                         GenerateSudoku generateSudoku = new GenerateSudoku(level);
                         String sudokuData = generateSudoku.getStringData();
                         Intent intent = new Intent(StartActivity.this, MainActivity.class);
+                        intent.putExtra("flag","0");
                         intent.putExtra("data", sudokuData);
                         Message msg1=new Message();
                         msg1.what=CLOSE_LOADING_DIALOG;
@@ -111,6 +115,14 @@ public class StartActivity extends Activity {
                 levelDialog.show();
 
 
+            }
+        });
+        readArchiveButton=(Button)findViewById(R.id.read_archive_button);
+        readArchiveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(StartActivity.this,ArchiveActivity.class);
+                startActivity(intent);
             }
         });
 

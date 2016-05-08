@@ -120,4 +120,25 @@ public class Game {
         sudoku=fromPuzzleString(str);
 
     }
+    public String getSudoArchive(){
+        String str1="";
+        for(int i=0;i<81;++i){
+            str1=str1+sudoku[i].getValue();
+        }
+        for(int i=0;i<81;++i){
+            if(sudoku[i].getIsDefault()==true)str1=str1+"0";
+            else str1=str1+"1";
+        }
+
+        return str1;
+    }
+    public void setSudokuFromArch(String arch){
+        for (int i=0;i<81;++i){
+            sudoku[i].setValue(Integer.parseInt(String.valueOf(arch.charAt(i))));
+        }
+        for(int i=0;i<81;++i){
+            if(arch.charAt(i+81)=='0')sudoku[i].setIsDefault(true);
+            else sudoku[i].setIsDefault(false);
+        }
+    }
 }

@@ -128,6 +128,13 @@ public class SudoView extends View{
         game.setSudoku(data);
         invalidate();
     }
+    public String getSudokuArch(){
+        return game.getSudoArchive();
+    }
+    public void setSudokuFromArch(String arch){
+        game.setSudokuFromArch(arch);
+        invalidate();
+    }
 
 
 }
