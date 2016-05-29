@@ -11,5 +11,10 @@
     <color name="light_purple">#9b59b6</color>
     <color name="lbutton_default_color">#9b59b6</color>
     <color name="lbutton_default_shadow_color">#8e44ad</color>
+    <color name="color_dialog_title">#303030</color>
+    <color name="color_dialog_content_prompt">#343434</color>
+    <color name="color_type_success">#90b06e</color>
+    <color name="color_dialog_gray">#ededf3</color>
+    <color name="color_type_info">#79b3e4</color>
 
 </resources>

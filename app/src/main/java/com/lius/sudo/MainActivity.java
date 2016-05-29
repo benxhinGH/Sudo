@@ -51,7 +51,8 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 if(sudoView.game.judgeResult()){
-                    Toast.makeText(MainActivity.this,"恭喜过关！",Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(MainActivity.this,"恭喜过关！",Toast.LENGTH_SHORT).show();
+                    new LDialog(MainActivity.this).show();
 
                 }else{
                     Toast.makeText(MainActivity.this,"存在错误！",Toast.LENGTH_SHORT).show();
