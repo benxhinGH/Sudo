@@ -6,43 +6,75 @@
     android:orientation="vertical"
     android:stretchColumns="*">
     <TableRow>
-        <Button
+        <com.lius.sudo.LButton
+
+            android:layout_marginRight="10dp"
             android:id="@+id/keypad_1"
-            android:text="1"/>
-        <Button
+            android:text="1"
+            android:textColor="#ffffff"
+            android:textSize="18sp"/>
+        <com.lius.sudo.LButton
+
+            android:layout_marginRight="10dp"
             android:id="@+id/keypad_2"
-            android:text="2"/>
-        <Button
+            android:text="2"
+            android:textColor="#ffffff"
+            android:textSize="18sp"/>
+        <com.lius.sudo.LButton
             android:id="@+id/keypad_3"
-            android:text="3"/>
+            android:text="3"
+            android:textColor="#ffffff"
+            android:textSize="18sp"/>
     </TableRow>
-    <TableRow>
-        <Button
+    <TableRow
+        android:layout_marginTop="10dp">
+        <com.lius.sudo.LButton
+            android:layout_marginRight="10dp"
             android:id="@+id/keypad_4"
-            android:text="4"/>
-        <Button
+            android:text="4"
+            android:textColor="#ffffff"
+            android:textSize="18sp"/>
+        <com.lius.sudo.LButton
+            android:layout_marginRight="10dp"
             android:id="@+id/keypad_5"
-            android:text="5"/>
-        <Button
+            android:text="5"
+            android:textColor="#ffffff"
+            android:textSize="18sp"/>
+        <com.lius.sudo.LButton
             android:id="@+id/keypad_6"
-            android:text="6"/>
+            android:text="6"
+            android:textColor="#ffffff"
+            android:textSize="18sp"/>
     </TableRow>
-    <TableRow>
-        <Button
+    <TableRow
+        android:layout_marginTop="10dp">
+        <com.lius.sudo.LButton
+            android:layout_marginRight="10dp"
             android:id="@+id/keypad_7"
-            android:text="7"/>
-        <Button
+            android:text="7"
+            android:textColor="#ffffff"
+            android:textSize="18sp"/>
+        <com.lius.sudo.LButton
+            android:layout_marginRight="10dp"
             android:id="@+id/keypad_8"
-            android:text="8"/>
-        <Button
+            android:text="8"
+            android:textColor="#ffffff"
+            android:textSize="18sp"/>
+        <com.lius.sudo.LButton
             android:id="@+id/keypad_9"
-            android:text="9"/>
+            android:text="9"
+            android:textColor="#ffffff"
+            android:textSize="18sp"/>
     </TableRow>
-    <TableRow>
-        <Button
+    <TableRow
+        android:layout_marginTop="10dp">
+        <com.lius.sudo.LButton
             android:layout_width="35dp"
+            android:layout_marginRight="10dp"
             android:id="@+id/clear"
-            android:text="清空"/>
+            android:text="清空"
+            android:textColor="#ffffff"
+            android:textSize="18sp"/>
     </TableRow>
 
 </TableLayout>

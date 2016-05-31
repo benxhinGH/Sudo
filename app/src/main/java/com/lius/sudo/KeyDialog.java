@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 
 /**
  * Created by Administrator on 2016/4/7 0007.
@@ -12,21 +14,38 @@ public class KeyDialog extends Dialog {
 
     private final View keys[]=new View[10];
 
+    private AnimationSet animIn,animOut;
+    private View mDialogView;
+
     private SudoView sudoView;
 
     public KeyDialog(Context context,SudoView sudoView){
-        super(context);
+        super(context,R.style.color_dialog);
         this.sudoView=sudoView;
+        init();
+    }
+    private void init(){
+        animIn=AnimationLoader.getInAnimation(getContext());
+        animOut=AnimationLoader.getOutAnimation(getContext());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mDialogView.startAnimation(animIn);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setTitle("KeyDialog");
+        mDialogView=getWindow().getDecorView().findViewById(android.R.id.content);
+
+        //setTitle("KeyDialog");
         setContentView(R.layout.keypad);
         findViews();
         setListeners();
+
     }
 
 
@@ -47,7 +66,7 @@ public class KeyDialog extends Dialog {
 
     private void returnResult(int num){
         sudoView.setSelectedNum(num);
-        dismiss();
+        mDialogView.startAnimation(animOut);
     }
 
     private void setListeners(){
@@ -60,5 +79,25 @@ public class KeyDialog extends Dialog {
                 }
             });
         }
+        animOut.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                callDismiss();
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+    }
+    private void callDismiss(){
+        dismiss();
     }
 }

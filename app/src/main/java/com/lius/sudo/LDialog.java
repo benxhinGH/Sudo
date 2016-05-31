@@ -138,11 +138,13 @@ public class LDialog extends Dialog{
         Canvas canvas = new Canvas(bitmap);
 
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setColor(backgroundColor);
+        paint.setColor(getContext().getResources().getColor(R.color.color_type_success));
         Path path = new Path();
         path.moveTo(0, 0);
-        path.lineTo(width, 0);
         path.lineTo(width / 2, height);
+        path.lineTo(width, 0);
+
+
         path.close();
 
         canvas.drawPath(path, paint);

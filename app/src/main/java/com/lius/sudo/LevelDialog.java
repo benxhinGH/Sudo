@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.widget.Button;
 
 /**
@@ -11,22 +13,49 @@ import android.widget.Button;
  */
 public class LevelDialog extends Dialog{
 
+    private AnimationSet animIn,animOut;
+    private View mDialogView;
+
     private Button[] levelButton=new Button[5];
 
 
     public LevelDialog(Context context){
-        super(context);
+        this(context,0);
+    }
+    public LevelDialog(Context context,int theme){
+        super(context,R.style.color_dialog);
+        init();
+    }
+    //获取加载动画
+    private void init(){
+        animIn=AnimationLoader.getInAnimation(getContext());
+        animOut=AnimationLoader.getOutAnimation(getContext());
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mDialogView.startAnimation(animIn);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setTitle("levelDialog");
+        mDialogView=getWindow().getDecorView().findViewById(android.R.id.content);
+
+        //initView();
+
+        //setTitle("levelDialog");
         setContentView(R.layout.leveldialog);
         findViews();
         setListeners();
+
     }
+    //private void initView(){
+     //   View contentView=View.inflate()
+    //}
 
     private void findViews(){
         levelButton[0]=(Button)findViewById(R.id.level_1);
@@ -42,9 +71,30 @@ public class LevelDialog extends Dialog{
                 @Override
                 public void onClick(View v) {
                     StartActivity.level=t;
-                    dismiss();
+                    mDialogView.startAnimation(animOut);
                 }
             });
         }
+        animOut.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                callDismiss();
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
     }
+    private void callDismiss(){
+        dismiss();
+    }
+
 }
