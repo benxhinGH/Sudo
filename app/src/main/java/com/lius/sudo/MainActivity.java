@@ -1,6 +1,7 @@
 package com.lius.sudo;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -19,11 +20,17 @@ import java.text.SimpleDateFormat;
  */
 public class MainActivity extends Activity {
 
-    private Button completeButton;
+    public static int DIALOGFLAG=0;
+    public static final int COMPLETE=1;
+    public static final int SAVE=2;
+    public static final int RESET=3;
+    public static final int QUIT=4;
+
+    private Button menuButton;
 
     private SudoView sudoView;
-    private Button resetButton;
-    private Button saveButton;
+
+
 
 
     @Override
@@ -42,17 +49,70 @@ public class MainActivity extends Activity {
 
             sudoView.setSudokuFromArch(data);
         }
+        menuButton=(Button)findViewById(R.id.menu_button);
+        menuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MenuDialog md=new MenuDialog(MainActivity.this);
+                md.show();
+                md.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        switch (DIALOGFLAG){
+                            case COMPLETE:
+                                if(sudoView.game.judgeResult()){
+                                    //Toast.makeText(MainActivity.this,"恭喜过关！",Toast.LENGTH_SHORT).show();
+                                    new LDialog(MainActivity.this).show();
+
+
+                                }else{
+                                    Toast.makeText(MainActivity.this,"存在错误！",Toast.LENGTH_SHORT).show();
+
+                                }
+                                break;
+                            case SAVE:
+                                SharedPreferences.Editor editor=getSharedPreferences("sudoarchdata",MODE_PRIVATE).edit();
+                                SimpleDateFormat formatter=new SimpleDateFormat("yyyy年MM月dd日HH:mm:ss");
+                                Date curDate=new Date(System.currentTimeMillis());//获取当前时间
+                                String str=formatter.format(curDate);
+                                Log.d("MainActivity","格式化后的时间为"+str);
+                                String data=sudoView.getSudokuArch();
+                                editor.putString(str,data);
+                                editor.commit();
+                                Toast.makeText(MainActivity.this,"已存档",Toast.LENGTH_SHORT).show();
+
+
+                                SharedPreferences sharedPreferences=getSharedPreferences("sudoarchdata",MODE_PRIVATE);
+                                String testStr=sharedPreferences.getString(str,"");
+                                Log.d("MainActivity","测试保存数据"+testStr);
+                                break;
+                            case RESET:
+                                sudoView.resetGame();
+                                break;
+                            case QUIT:
+                                break;
+                            default:
+                                break;
+                        }
+                        DIALOGFLAG=0;
+
+                    }
+                });
+
+            }
+        });
 
 
 
 
-        completeButton=(Button)findViewById(R.id.complete_button);
+        /*completeButton=(Button)findViewById(R.id.complete_button);
         completeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(sudoView.game.judgeResult()){
                     //Toast.makeText(MainActivity.this,"恭喜过关！",Toast.LENGTH_SHORT).show();
                     new LDialog(MainActivity.this).show();
+
 
                 }else{
                     Toast.makeText(MainActivity.this,"存在错误！",Toast.LENGTH_SHORT).show();
@@ -88,7 +148,7 @@ public class MainActivity extends Activity {
                 Log.d("MainActivity","测试保存数据"+testStr);
 
             }
-        });
+        });*/
 
 
 
