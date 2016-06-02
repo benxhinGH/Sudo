@@ -7,7 +7,6 @@ import android.util.Log;
  */
 public class Game {
     private String str="";
-    private GenerateSudoku generateSudoku;
 
     private Number sudoku []=new Number[9*9];
 

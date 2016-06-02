@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -44,6 +45,7 @@ public class ArchiveActivity extends Activity{
                 Intent intent=new Intent(ArchiveActivity.this,MainActivity.class);
                 intent.putExtra("flag","1");
                 intent.putExtra("data",data);
+                Log.d("ArchiveActivity","数据为"+data);
                 startActivity(intent);
                 finish();
             }

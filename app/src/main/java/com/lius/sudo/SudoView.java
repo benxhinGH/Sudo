@@ -135,6 +135,12 @@ public class SudoView extends View{
         game.setSudokuFromArch(arch);
         invalidate();
     }
+    public void regenerateSudoku(){
+        GenerateSudoku generateSudoku=new GenerateSudoku(StartActivity.level);
+        String data=generateSudoku.getStringData();
+        game.setSudoku(data);
+
+    }
 
 
 }

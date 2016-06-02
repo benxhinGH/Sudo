@@ -92,13 +92,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
-        android:id="@+id/llBtnGroup">
+        android:id="@+id/llBtnGroup"
+        android:paddingBottom="10dp">
         <TextView
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:id="@+id/leftbutton"
-            android:layout_marginLeft="5dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+
             android:clickable="true"
             android:text="leftbutton"
             android:minHeight="40dp"
@@ -110,8 +111,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/rightbutton"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginRight="10dp"
+
             android:clickable="true"
             android:textColor="#676767"
             android:text="rightbutton"

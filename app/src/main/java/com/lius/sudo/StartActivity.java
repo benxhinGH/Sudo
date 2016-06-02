@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Map;
 
@@ -33,7 +34,7 @@ public class StartActivity extends Activity {
 
     public static int level = 1;
     private Button startGameButton;
-    private Button levelButton;
+    private Button elseButton;
     private Button readArchiveButton;
     private Button quitButton;
     private Dialog mLoadingDialog;
@@ -62,29 +63,37 @@ public class StartActivity extends Activity {
         startGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                new Thread(new Runnable() {
+                Dialog ld=new LevelDialog(StartActivity.this);
+                ld.show();
+                ld.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
-                    public void run() {
-                        Message msg=new Message();
-                        msg.what=SHOW_LOADING_DIALOG;
-                        handler.sendMessage(msg);
-                        GenerateSudoku generateSudoku = new GenerateSudoku(level);
-                        String sudokuData = generateSudoku.getStringData();
-                        Intent intent = new Intent(StartActivity.this, MainActivity.class);
-                        intent.putExtra("flag","0");
-                        intent.putExtra("data", sudokuData);
-                        Message msg1=new Message();
-                        msg1.what=CLOSE_LOADING_DIALOG;
-                        handler.sendMessage(msg1);
-                        startActivity(intent);
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Message msg=new Message();
+                                msg.what=SHOW_LOADING_DIALOG;
+                                handler.sendMessage(msg);
+                                GenerateSudoku generateSudoku = new GenerateSudoku(level);
+                                String sudokuData = generateSudoku.getStringData();
+                                Intent intent = new Intent(StartActivity.this, MainActivity.class);
+                                intent.putExtra("flag","0");
+                                intent.putExtra("data", sudokuData);
+                                Message msg1=new Message();
+                                msg1.what=CLOSE_LOADING_DIALOG;
+                                handler.sendMessage(msg1);
+                                startActivity(intent);
 
+                            }
+                        }).start();
                     }
-                }).start();
+                });
+
+
 
             }
         });
-        levelButton = (Button) findViewById(R.id.level_button);
+        /*levelButton = (Button) findViewById(R.id.level_button);
         levelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,6 +125,13 @@ public class StartActivity extends Activity {
                 levelDialog.show();
 
 
+            }
+        });*/
+        elseButton=(Button)findViewById(R.id.else_button);
+        elseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(StartActivity.this,"我是菜牛，哈哈",Toast.LENGTH_SHORT).show();
             }
         });
         readArchiveButton=(Button)findViewById(R.id.read_archive_button);

@@ -2,6 +2,8 @@ package com.lius.sudo;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -12,11 +14,17 @@ import android.graphics.Path;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,22 +35,30 @@ import android.widget.TextView;
  */
 public class LDialog extends Dialog{
 
+    final int SHOW_LOADING_DIALOG=0;
+    final int CLOSE_LOADING_DIALOG=1;
+
+
     private static final Bitmap.Config BITMAP_CONFIG = Bitmap.Config.ARGB_8888;
     private static final int DIALOG_TYPE_SUCCESS=0;
     private static final int DIALOG_TYPE_WRONG=1;
     private static final int LEFT=0;
     private static final int RIGHT=1;
+    private int DISMISSFLAG=0;
     private int dialogType=0;
     private static final int DEFAULT_RADIUS     = 6;
     private AnimationSet animIn,animOut;
     private View mDialogView;
     private TextView mContentTv,leftButton,rightButton;
+    private Context mContext;
+    private LocalBroadcastManager localBroadcastManager;
 
     public LDialog(Context context,int dialogType) {
         //this(context,0);
         super(context,R.style.color_dialog);
         this.dialogType=dialogType;
         init();
+        mContext=context;
     }
     //public LDialog(Context context, int theme){
     //    super(context,R.style.color_dialog);
@@ -66,6 +82,8 @@ public class LDialog extends Dialog{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        DISMISSFLAG=0;
+        localBroadcastManager=LocalBroadcastManager.getInstance(mContext);
         initView();
     }
     private void initView(){
@@ -88,10 +106,11 @@ public class LDialog extends Dialog{
         triangleIv.setImageBitmap(createTriangel((int) (DisplayUtil.getScreenSize(getContext()).x * 0.7), DisplayUtil.dp2px(getContext(), 10)));
         topLayout.addView(triangleIv);
 
+
         setBtnBackground(leftButton);
         setBtnBackground(rightButton);
-        setBottomCorners(leftButton);
-        setBottomCorners(rightButton);
+        setBottomCorners(llBtnGroup);
+
 
 
         int radius = DisplayUtil.dp2px(getContext(), DEFAULT_RADIUS);
@@ -116,7 +135,9 @@ public class LDialog extends Dialog{
         leftButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dismiss();
+                mDialogView.startAnimation(animOut);
+                DISMISSFLAG=1;
+
             }
         });
         rightButton.setText(getButtonTextByType(dialogType,RIGHT));
@@ -130,6 +151,7 @@ public class LDialog extends Dialog{
             @Override
             public void onAnimationEnd(Animation animation) {
                 callDismiss();
+                Log.d("LDialog","打电话callDismiss打电话callDismiss打电话callDismiss打电话callDismiss");
 
             }
 
@@ -170,6 +192,7 @@ public class LDialog extends Dialog{
         return bitmap;
 
     }
+    //设置TextView按钮的边框
     private void setBtnBackground(final TextView btnOk) {
         btnOk.setTextColor(createColorStateList(R.color.light_purple, R.color.color_dialog_gray));
         btnOk.setBackgroundDrawable(getContext().getResources().getDrawable(R.drawable.sel_btn));
@@ -190,6 +213,7 @@ public class LDialog extends Dialog{
         ColorStateList colorList = new ColorStateList(states, colors);
         return colorList;
     }
+    //设置对话框下面两个角的弧度
     private void setBottomCorners(View llBtnGroup) {
         int radius = DisplayUtil.dp2px(getContext(), DEFAULT_RADIUS);
         float[] outerRadii = new float[] { 0, 0, 0, 0, radius, radius, radius, radius };
@@ -201,6 +225,21 @@ public class LDialog extends Dialog{
     }
     private void callDismiss(){
         super.dismiss();
+        switch(DISMISSFLAG){
+            case 1:
+                Intent intent=new Intent("com.lius.sudo.FINISH");
+                localBroadcastManager.sendBroadcast(intent);
+                Log.d("LDialog","发出FINISH广播发出FINISH广播发出FINISH广播发出FINISH广播发出FINISH广播");
+                break;
+            case 2:
+                Intent intent2=new Intent("com.lius.sudo.GENERATESUDOKU");
+                localBroadcastManager.sendBroadcast(intent2);
+                Log.d("LDialog","发出GENERATESUDOKU广播发出GENERATESUDOKU广播发出GENERATESUDOKU广播");
+                break;
+            default:
+                break;
+
+        }
     }
     /*private int getColorByType(int type){
         switch (type){
@@ -256,6 +295,8 @@ public class LDialog extends Dialog{
             rightButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    mDialogView.startAnimation(animOut);
+                    DISMISSFLAG=2;
 
                 }
             });
@@ -263,11 +304,14 @@ public class LDialog extends Dialog{
             rightButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    mDialogView.startAnimation(animOut);
 
                 }
             });
         }
     }
+
+
 
     /*private void initAnimListener() {
         animOut.setAnimationListener(new Animation.AnimationListener() {
