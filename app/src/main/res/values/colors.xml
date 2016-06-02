@@ -16,5 +16,6 @@
     <color name="color_type_success">#90b06e</color>
     <color name="color_dialog_gray">#ededf3</color>
     <color name="color_type_info">#79b3e4</color>
+    <color name="listview_gray">#BFBFBF</color>
 
 </resources>

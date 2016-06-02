@@ -45,5 +45,16 @@
         android:layout_marginTop="10dp"
         android:textSize="20dp"
         android:textColor="#ffffff"/>
+    <com.lius.sudo.LButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="200dp"
+        android:id="@+id/quit_btn"
+        android:text="退出游戏"
+        android:layout_below="@+id/level_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:textSize="20dp"
+        android:textColor="#ffffff"/>
 
 </RelativeLayout>

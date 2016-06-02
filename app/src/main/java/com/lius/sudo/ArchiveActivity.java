@@ -23,8 +23,8 @@ import java.util.Set;
 public class ArchiveActivity extends Activity{
 
     private ListView archive_listview;
-    private List<String> archive_list=new ArrayList<>();
-    private Button clearArchButton;
+    private List<ArchiveDate> archive_list=new ArrayList<>();
+    private MyAdapter myAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,27 +33,13 @@ public class ArchiveActivity extends Activity{
         setContentView(R.layout.archive_activity_layout);
         final SharedPreferences preferences=getSharedPreferences("sudoarchdata",MODE_PRIVATE);
         getDataFromPref(preferences);
-        final ArrayAdapter<String> adapter=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,archive_list);
+        myAdapter=new MyAdapter(this,archive_list,preferences);
         archive_listview=(ListView)findViewById(R.id.archive_listview);
-        archive_listview.setAdapter(adapter);
-        clearArchButton=(Button)findViewById(R.id.clear_archive_button);
-        clearArchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SharedPreferences.Editor editor=preferences.edit();
-                editor.clear();
-                editor.commit();
-
-                getDataFromPref(preferences);
-                Toast.makeText(ArchiveActivity.this,"已清空",Toast.LENGTH_SHORT).show();
-                adapter.notifyDataSetChanged();
-
-            }
-        });
+        archive_listview.setAdapter(myAdapter);
         archive_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String archTime=archive_list.get(i);
+                String archTime=archive_list.get(i).getPrefName();
                 String data=preferences.getString(archTime,"");
                 Intent intent=new Intent(ArchiveActivity.this,MainActivity.class);
                 intent.putExtra("flag","1");
@@ -75,7 +61,10 @@ public class ArchiveActivity extends Activity{
 
         for(int i=0;i<objects.length;++i){
             String str=objects[i].toString();
-            archive_list.add(str);
+            String time=str.substring(0,19);
+            String level=str.substring(19);
+            ArchiveDate archiveDate=new ArchiveDate(time,level);
+            archive_list.add(archiveDate);
         }
     }
 }

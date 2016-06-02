@@ -15,17 +15,11 @@
             android:textSize="22sp"
             android:layout_centerVertical="true"
             android:paddingLeft="10dp"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/clear_archive_button"
-            android:layout_alignParentRight="true"
-            android:text="清除存档"
-            android:layout_centerVertical="true"/>
     </RelativeLayout>
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/archive_listview"/>
+        android:id="@+id/archive_listview"
+        android:listSelector="@drawable/listview_seletor"/>
 
 </LinearLayout>

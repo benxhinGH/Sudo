@@ -74,7 +74,28 @@ public class MainActivity extends Activity {
                                 SharedPreferences.Editor editor=getSharedPreferences("sudoarchdata",MODE_PRIVATE).edit();
                                 SimpleDateFormat formatter=new SimpleDateFormat("yyyy年MM月dd日HH:mm:ss");
                                 Date curDate=new Date(System.currentTimeMillis());//获取当前时间
-                                String str=formatter.format(curDate);
+                                String time=formatter.format(curDate);
+                                String level="";
+                                switch (StartActivity.level){
+                                    case 1:
+                                        level="入门级";
+                                        break;
+                                    case 2:
+                                        level="初级";
+                                        break;
+                                    case 3:
+                                        level="普通";
+                                        break;
+                                    case 4:
+                                        level="高级";
+                                        break;
+                                    case 5:
+                                        level="骨灰级";
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                String str=time+level;
                                 Log.d("MainActivity","格式化后的时间为"+str);
                                 String data=sudoView.getSudokuArch();
                                 editor.putString(str,data);

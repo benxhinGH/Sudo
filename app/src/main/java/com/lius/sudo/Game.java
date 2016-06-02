@@ -111,6 +111,7 @@ public class Game {
 
     public void resetSudoku(){
         for(Number n:sudoku){
+            if(n==null)return;
             if(!n.getIsDefault())n.setValue(0);
         }
     }

@@ -35,6 +35,7 @@ public class StartActivity extends Activity {
     private Button startGameButton;
     private Button levelButton;
     private Button readArchiveButton;
+    private Button quitButton;
     private Dialog mLoadingDialog;
     private Handler handler = new Handler() {
         @Override
@@ -123,6 +124,13 @@ public class StartActivity extends Activity {
             public void onClick(View view) {
                 Intent intent=new Intent(StartActivity.this,ArchiveActivity.class);
                 startActivity(intent);
+            }
+        });
+        quitButton=(Button)findViewById(R.id.quit_btn);
+        quitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
 
