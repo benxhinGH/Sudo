@@ -32,7 +32,7 @@ public class StartActivity extends Activity {
     final int SHOW_LOADING_DIALOG=0;
     final int CLOSE_LOADING_DIALOG=1;
 
-    public static int level = 1;
+    public static int level = -1;
     private Button startGameButton;
     private Button elseButton;
     private Button readArchiveButton;
@@ -55,6 +55,12 @@ public class StartActivity extends Activity {
     };
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        level=-1;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -68,24 +74,27 @@ public class StartActivity extends Activity {
                 ld.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialogInterface) {
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Message msg=new Message();
-                                msg.what=SHOW_LOADING_DIALOG;
-                                handler.sendMessage(msg);
-                                GenerateSudoku generateSudoku = new GenerateSudoku(level);
-                                String sudokuData = generateSudoku.getStringData();
-                                Intent intent = new Intent(StartActivity.this, MainActivity.class);
-                                intent.putExtra("flag","0");
-                                intent.putExtra("data", sudokuData);
-                                Message msg1=new Message();
-                                msg1.what=CLOSE_LOADING_DIALOG;
-                                handler.sendMessage(msg1);
-                                startActivity(intent);
+                        if(level!=-1){
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Message msg=new Message();
+                                    msg.what=SHOW_LOADING_DIALOG;
+                                    handler.sendMessage(msg);
+                                    GenerateSudoku generateSudoku = new GenerateSudoku(level);
+                                    String sudokuData = generateSudoku.getStringData();
+                                    Intent intent = new Intent(StartActivity.this, MainActivity.class);
+                                    intent.putExtra("flag","0");
+                                    intent.putExtra("data", sudokuData);
+                                    Message msg1=new Message();
+                                    msg1.what=CLOSE_LOADING_DIALOG;
+                                    handler.sendMessage(msg1);
+                                    startActivity(intent);
 
-                            }
-                        }).start();
+                                }
+                            }).start();
+                        }
+
                     }
                 });
 
