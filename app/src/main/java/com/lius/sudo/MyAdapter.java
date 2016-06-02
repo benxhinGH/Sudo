@@ -74,7 +74,7 @@ public class MyAdapter extends BaseAdapter{
     }
     private void deleteArchData(int position){
         SharedPreferences.Editor editor=preferences.edit();
-        String str=data.get(position).getLevel()+data.get(position).getArchTime();
+        String str=data.get(position).getPrefName();
         editor.remove(str);
         editor.commit();
         data.remove(position);

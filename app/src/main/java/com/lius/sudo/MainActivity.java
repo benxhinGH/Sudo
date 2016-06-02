@@ -62,12 +62,12 @@ public class MainActivity extends Activity {
                             case COMPLETE:
                                 if(sudoView.game.judgeResult()){
                                     //Toast.makeText(MainActivity.this,"恭喜过关！",Toast.LENGTH_SHORT).show();
-                                    new LDialog(MainActivity.this).show();
+                                    new LDialog(MainActivity.this,0).show();
 
 
                                 }else{
-                                    Toast.makeText(MainActivity.this,"存在错误！",Toast.LENGTH_SHORT).show();
-
+                                    //Toast.makeText(MainActivity.this,"存在错误！",Toast.LENGTH_SHORT).show();
+                                    new LDialog(MainActivity.this,1).show();
                                 }
                                 break;
                             case SAVE:
@@ -111,6 +111,7 @@ public class MainActivity extends Activity {
                                 sudoView.resetGame();
                                 break;
                             case QUIT:
+                                finish();
                                 break;
                             default:
                                 break;
@@ -177,6 +178,7 @@ public class MainActivity extends Activity {
 
 
     }
+
 
 
 }

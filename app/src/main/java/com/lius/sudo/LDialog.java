@@ -28,19 +28,27 @@ import android.widget.TextView;
 public class LDialog extends Dialog{
 
     private static final Bitmap.Config BITMAP_CONFIG = Bitmap.Config.ARGB_8888;
+    private static final int DIALOG_TYPE_SUCCESS=0;
+    private static final int DIALOG_TYPE_WRONG=1;
+    private static final int LEFT=0;
+    private static final int RIGHT=1;
+    private int dialogType=0;
     private static final int DEFAULT_RADIUS     = 6;
     private AnimationSet animIn,animOut;
     private View mDialogView;
-    private TextView mTitleTv,mContentTv,mPositiveBtn;
+    private TextView mContentTv,leftButton,rightButton;
 
-    public LDialog(Context context) {
-        this(context,0);
-    }
-    public LDialog(Context context, int theme){
+    public LDialog(Context context,int dialogType) {
+        //this(context,0);
         super(context,R.style.color_dialog);
+        this.dialogType=dialogType;
         init();
-
     }
+    //public LDialog(Context context, int theme){
+    //    super(context,R.style.color_dialog);
+     //   init();
+
+    //}
 
     @Override
     protected void onStart() {
@@ -67,12 +75,12 @@ public class LDialog extends Dialog{
 
         //获取各控件实例
         mDialogView = getWindow().getDecorView().findViewById(android.R.id.content);
-        mTitleTv = (TextView) findViewById(R.id.tvTitle);
         mContentTv = (TextView) contentView.findViewById(R.id.tvContent);
-        mPositiveBtn = (TextView) contentView.findViewById(R.id.btnPositive);
+        leftButton=(TextView)findViewById(R.id.leftbutton);
+        rightButton=(TextView)findViewById(R.id.rightbutton);
         View llBtnGroup = findViewById(R.id.llBtnGroup);
         ImageView logoIv = (ImageView) contentView.findViewById(R.id.logoIv);
-        logoIv.setBackgroundResource(R.drawable.ic_success);
+        logoIv.setBackgroundResource(getIconByType(dialogType));
 
         LinearLayout topLayout = (LinearLayout) contentView.findViewById(R.id.topLayout);
         ImageView triangleIv = new ImageView(getContext());
@@ -80,8 +88,10 @@ public class LDialog extends Dialog{
         triangleIv.setImageBitmap(createTriangel((int) (DisplayUtil.getScreenSize(getContext()).x * 0.7), DisplayUtil.dp2px(getContext(), 10)));
         topLayout.addView(triangleIv);
 
-        setBtnBackground(mPositiveBtn);
-        setBottomCorners(llBtnGroup);
+        setBtnBackground(leftButton);
+        setBtnBackground(rightButton);
+        setBottomCorners(leftButton);
+        setBottomCorners(rightButton);
 
 
         int radius = DisplayUtil.dp2px(getContext(), DEFAULT_RADIUS);
@@ -89,19 +99,28 @@ public class LDialog extends Dialog{
         RoundRectShape roundRectShape = new RoundRectShape(outerRadii, null, null);
         ShapeDrawable shapeDrawable = new ShapeDrawable(roundRectShape);
         shapeDrawable.getPaint().setStyle(Paint.Style.FILL);
-        shapeDrawable.getPaint().setColor(getContext().getResources().getColor(R.color.color_type_success));
+        shapeDrawable.getPaint().setColor(getContext().getResources().getColor(R.color.light_purple));
         LinearLayout llTop = (LinearLayout) findViewById(R.id.llTop);
         llTop.setBackgroundDrawable(shapeDrawable);
 
-        mTitleTv.setText("this's title");
-        mContentTv.setText("this's content");
-        mPositiveBtn.setText("ok");
-        mPositiveBtn.setOnClickListener(new View.OnClickListener() {
+        //mTitleTv.setText("this's title");
+        mContentTv.setText(getContentTextByType(dialogType));
+        //mPositiveBtn.setText("ok");
+        //mPositiveBtn.setOnClickListener(new View.OnClickListener() {
+        //    @Override
+         //   public void onClick(View view) {
+         //       mDialogView.startAnimation(animOut);
+         //   }
+       // });
+        leftButton.setText(getButtonTextByType(dialogType,LEFT));
+        leftButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mDialogView.startAnimation(animOut);
+                dismiss();
             }
         });
+        rightButton.setText(getButtonTextByType(dialogType,RIGHT));
+        setRightButtonListener();
         animOut.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -130,7 +149,7 @@ public class LDialog extends Dialog{
         if (width <= 0 || height <= 0) {
             return null;
         }
-        return getBitmap(width, height, R.color.color_type_success);
+        return getBitmap(width, height, R.color.light_purple);
     }
 
     private Bitmap getBitmap(int width, int height, int backgroundColor) {
@@ -138,7 +157,7 @@ public class LDialog extends Dialog{
         Canvas canvas = new Canvas(bitmap);
 
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setColor(getContext().getResources().getColor(R.color.color_type_success));
+        paint.setColor(getContext().getResources().getColor(R.color.light_purple));
         Path path = new Path();
         path.moveTo(0, 0);
         path.lineTo(width / 2, height);
@@ -152,7 +171,7 @@ public class LDialog extends Dialog{
 
     }
     private void setBtnBackground(final TextView btnOk) {
-        btnOk.setTextColor(createColorStateList(R.color.color_type_success, R.color.color_dialog_gray));
+        btnOk.setTextColor(createColorStateList(R.color.light_purple, R.color.color_dialog_gray));
         btnOk.setBackgroundDrawable(getContext().getResources().getDrawable(R.drawable.sel_btn));
     }
     private ColorStateList createColorStateList(int normal, int pressed) {
@@ -183,6 +202,73 @@ public class LDialog extends Dialog{
     private void callDismiss(){
         super.dismiss();
     }
+    /*private int getColorByType(int type){
+        switch (type){
+            case DIALOG_TYPE_SUCCESS:
+                return R.color.color_type_success;
+            case DIALOG_TYPE_WRONG:
+                return R.color.color_type_wrong;
+            default:
+                break;
+        }
+        return R.color.color_type_success;
+
+    }*/
+    private int getIconByType(int type){
+        switch (type){
+            case DIALOG_TYPE_SUCCESS:
+                return R.drawable.ic_success;
+            case DIALOG_TYPE_WRONG:
+                return R.drawable.ic_wrong;
+            default:
+                break;
+        }
+        return R.drawable.ic_success;
+    }
+    private String getContentTextByType(int type){
+        switch (type){
+            case DIALOG_TYPE_SUCCESS:
+                return "解题成功！";
+            case DIALOG_TYPE_WRONG:
+                return "存在错误！";
+            default:
+                break;
+        }
+        return "????";
+    }
+    private String getButtonTextByType(int type,int leftOrRight){
+        switch (type){
+            case DIALOG_TYPE_SUCCESS:
+                if(leftOrRight==LEFT)return "返回主界面";
+                else if(leftOrRight==RIGHT)return "继续游戏";
+                break;
+            case DIALOG_TYPE_WRONG:
+                if(leftOrRight==LEFT)return "返回主界面";
+                else if(leftOrRight==RIGHT)return "返回游戏";
+                break;
+            default:
+                break;
+        }
+        return "????";
+    }
+    private void setRightButtonListener(){
+        if(dialogType==DIALOG_TYPE_SUCCESS){
+            rightButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+        }else if(dialogType==DIALOG_TYPE_WRONG){
+            rightButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+        }
+    }
+
     /*private void initAnimListener() {
         animOut.setAnimationListener(new Animation.AnimationListener() {
             @Override
