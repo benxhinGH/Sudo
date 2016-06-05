@@ -140,7 +140,8 @@ public class StartActivity extends Activity {
         elseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(StartActivity.this,"我是菜牛，哈哈",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(StartActivity.this,"我是菜牛，哈哈",Toast.LENGTH_SHORT).show();
+                new LastDialog(StartActivity.this).show();
             }
         });
         readArchiveButton=(Button)findViewById(R.id.read_archive_button);
@@ -158,7 +159,6 @@ public class StartActivity extends Activity {
                 finish();
             }
         });
-
     }
 
     private void showProgressDialog() {

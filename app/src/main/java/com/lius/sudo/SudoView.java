@@ -70,12 +70,14 @@ public class SudoView extends View{
         numberPaint.setStyle(Paint.Style.STROKE);
         numberPaint.setTextSize(height * 0.75f);
         numberPaint.setTextAlign(Paint.Align.CENTER);
+        numberPaint.setAntiAlias(true);
 
         Paint userNumberPaint=new Paint();
         userNumberPaint.setColor(Color.BLACK);
         userNumberPaint.setStyle(Paint.Style.STROKE);
         userNumberPaint.setTextSize(height * 0.75f);
         userNumberPaint.setTextAlign(Paint.Align.CENTER);
+        userNumberPaint.setAntiAlias(true);
 
         //使用Paint获取FontMetrics对象，下面计算y的公式是使字符在单元格中居中的算法
         Paint.FontMetrics fm=numberPaint.getFontMetrics();

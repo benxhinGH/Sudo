@@ -26,6 +26,7 @@ public class ArchiveActivity extends Activity{
     private ListView archive_listview;
     private List<ArchiveDate> archive_list=new ArrayList<>();
     private MyAdapter myAdapter;
+    private Button backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,13 @@ public class ArchiveActivity extends Activity{
                 intent.putExtra("data",data);
                 Log.d("ArchiveActivity","数据为"+data);
                 startActivity(intent);
+                finish();
+            }
+        });
+        backButton=(Button)findViewById(R.id.back_button);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 finish();
             }
         });
