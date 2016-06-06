@@ -1,11 +1,9 @@
-package com.lius.sudo;
+package com.lius.sudo.Dialog;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -14,20 +12,20 @@ import android.graphics.Path;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.lius.sudo.tools.AnimationLoader;
+import com.lius.sudo.tools.DisplayUtil;
+import com.lius.sudo.R;
 
 
 /**
@@ -55,7 +53,7 @@ public class LDialog extends Dialog{
 
     public LDialog(Context context,int dialogType) {
         //this(context,0);
-        super(context,R.style.color_dialog);
+        super(context, R.style.color_dialog);
         this.dialogType=dialogType;
         init();
         mContext=context;
@@ -74,7 +72,7 @@ public class LDialog extends Dialog{
 
     //获取加载动画
     private void init(){
-        animIn=AnimationLoader.getInAnimation(getContext());
+        animIn= AnimationLoader.getInAnimation(getContext());
         animOut=AnimationLoader.getOutAnimation(getContext());
 
     }

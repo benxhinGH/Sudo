@@ -1,17 +1,19 @@
-package com.lius.sudo;
+package com.lius.sudo.Activity;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
+
+import com.lius.sudo.ArchiveDate;
+import com.lius.sudo.MainActivity;
+import com.lius.sudo.MyAdapter;
+import com.lius.sudo.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,12 +43,32 @@ public class ArchiveActivity extends Activity{
         archive_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String level=archive_list.get(i).getLevel();
+                switch (level){
+                    case "入门级":
+                        StartActivity.level=1;
+                        break;
+                    case "初级":
+                        StartActivity.level=2;
+                        break;
+                    case "普通":
+                        StartActivity.level=3;
+                        break;
+                    case "高级":
+                        StartActivity.level=4;
+                        break;
+                    case "骨灰级":
+                        StartActivity.level=5;
+                        break;
+                    default:
+                        break;
+                }
                 String archTime=archive_list.get(i).getPrefName();
                 String data=preferences.getString(archTime,"");
                 Intent intent=new Intent(ArchiveActivity.this,MainActivity.class);
                 intent.putExtra("flag","1");
                 intent.putExtra("data",data);
-                Log.d("ArchiveActivity","数据为"+data);
+               // Log.d("ArchiveActivity","数据为"+data);
                 startActivity(intent);
                 finish();
             }

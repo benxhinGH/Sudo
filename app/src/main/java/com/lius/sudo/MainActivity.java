@@ -24,6 +24,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lius.sudo.Activity.StartActivity;
+import com.lius.sudo.Dialog.LDialog;
+import com.lius.sudo.Dialog.LevelDialog;
+import com.lius.sudo.Dialog.MenuDialog;
+
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
@@ -101,12 +106,10 @@ public class MainActivity extends Activity {
                         switch (DIALOGFLAG){
                             case COMPLETE:
                                 if(sudoView.game.judgeResult()){
-                                    //Toast.makeText(MainActivity.this,"恭喜过关！",Toast.LENGTH_SHORT).show();
                                     new LDialog(MainActivity.this,0).show();
 
 
                                 }else{
-                                    //Toast.makeText(MainActivity.this,"存在错误！",Toast.LENGTH_SHORT).show();
                                     new LDialog(MainActivity.this,1).show();
                                 }
                                 break;
@@ -169,69 +172,13 @@ public class MainActivity extends Activity {
         intentFilter.addAction("com.lius.sudo.GENERATESUDOKU");
         intentFilter.addAction("com.lius.sudo.FINISH");
         localBroadcastManager.registerReceiver(localReceiver,intentFilter);
-
-
-
-
-
-
-        /*completeButton=(Button)findViewById(R.id.complete_button);
-        completeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(sudoView.game.judgeResult()){
-                    //Toast.makeText(MainActivity.this,"恭喜过关！",Toast.LENGTH_SHORT).show();
-                    new LDialog(MainActivity.this).show();
-
-
-                }else{
-                    Toast.makeText(MainActivity.this,"存在错误！",Toast.LENGTH_SHORT).show();
-
-                }
-            }
-        });
-        resetButton=(Button)findViewById(R.id.reset_button);
-        resetButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sudoView.resetGame();
-            }
-        });
-
-        saveButton=(Button)findViewById(R.id.save_button);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SharedPreferences.Editor editor=getSharedPreferences("sudoarchdata",MODE_PRIVATE).edit();
-                SimpleDateFormat formatter=new SimpleDateFormat("yyyy年MM月dd日HH:mm:ss");
-                Date curDate=new Date(System.currentTimeMillis());//获取当前时间
-                String str=formatter.format(curDate);
-                Log.d("MainActivity","格式化后的时间为"+str);
-                String data=sudoView.getSudokuArch();
-                editor.putString(str,data);
-                editor.commit();
-                Toast.makeText(MainActivity.this,"已存档",Toast.LENGTH_SHORT).show();
-
-
-                SharedPreferences sharedPreferences=getSharedPreferences("sudoarchdata",MODE_PRIVATE);
-                String testStr=sharedPreferences.getString(str,"");
-                Log.d("MainActivity","测试保存数据"+testStr);
-
-            }
-        });*/
-
-
-
-
-
-
     }
     class LocalReceiver extends BroadcastReceiver{
         @Override
         public void onReceive(Context context, Intent intent) {
             String action=intent.getAction();
             if(action.equals("com.lius.sudo.GENERATESUDOKU")){
-                Log.d("MainActivity","收到GENERATESUDOKU广播收到GENERATESUDOKU广播收到GENERATESUDOKU广播");
+               // Log.d("MainActivity","收到GENERATESUDOKU广播收到GENERATESUDOKU广播收到GENERATESUDOKU广播");
                 Dialog ld=new LevelDialog(MainActivity.this);
                 ld.show();
                 ld.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -259,7 +206,7 @@ public class MainActivity extends Activity {
                 });
 
             }else if(action.equals("com.lius.sudo.FINISH")){
-                Log.d("Mainactivity","收到FINISH广播收到FINISH广播收到FINISH广播收到FINISH广播收到FINISH广播");
+               // Log.d("Mainactivity","收到FINISH广播收到FINISH广播收到FINISH广播收到FINISH广播收到FINISH广播");
                 finish();
             }
 
@@ -288,7 +235,7 @@ public class MainActivity extends Activity {
     }
 
     private Dialog createLoadingDialog(Context context, String msg) {
-        Log.d("StartActivity","创建LoadingDialog创建LoadingDialog创建LoadingDialog创建LoadingDialog");
+        //Log.d("StartActivity","创建LoadingDialog创建LoadingDialog创建LoadingDialog创建LoadingDialog");
         LayoutInflater inflater = LayoutInflater.from(context);
         View v = inflater.inflate(R.layout.loadingdialog_layout, null);// 得到加载view
         LinearLayout layout = (LinearLayout) v.findViewById(R.id.loadingdialog_view);// 加载布局

@@ -1,4 +1,4 @@
-package com.lius.sudo;
+package com.lius.sudo.Dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -7,6 +7,10 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.widget.Button;
+
+import com.lius.sudo.tools.AnimationLoader;
+import com.lius.sudo.MainActivity;
+import com.lius.sudo.R;
 
 /**
  * Created by lius on 16-5-31.
@@ -17,11 +21,11 @@ public class MenuDialog extends Dialog{
     private View mDialogView;
     private Button completeButton,resetButton,saveButton,quitButton;
     public MenuDialog(Context context) {
-        super(context,R.style.color_dialog);
+        super(context, R.style.color_dialog);
         init();
     }
     private void init(){
-        animIn=AnimationLoader.getInAnimation(getContext());
+        animIn= AnimationLoader.getInAnimation(getContext());
         animOut=AnimationLoader.getOutAnimation(getContext());
     }
 

@@ -1,11 +1,10 @@
-package com.lius.sudo;
+package com.lius.sudo.Activity;
 
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -19,9 +18,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.Map;
+import com.lius.sudo.Dialog.LastDialog;
+import com.lius.sudo.Dialog.LevelDialog;
+import com.lius.sudo.GenerateSudoku;
+import com.lius.sudo.MainActivity;
+import com.lius.sudo.R;
 
 
 /**
@@ -102,40 +104,7 @@ public class StartActivity extends Activity {
 
             }
         });
-        /*levelButton = (Button) findViewById(R.id.level_button);
-        levelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LevelDialog levelDialog = new LevelDialog(StartActivity.this);
-                levelDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        switch (level) {
-                            case 1:
-                                levelButton.setText("当前等级：入门级");
-                                break;
-                            case 2:
-                                levelButton.setText("当前等级：初级");
-                                break;
-                            case 3:
-                                levelButton.setText("当前等级：普通");
-                                break;
-                            case 4:
-                                levelButton.setText("当前等级：高级");
-                                break;
-                            case 5:
-                                levelButton.setText("当前等级：骨灰级");
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                });
-                levelDialog.show();
 
-
-            }
-        });*/
         elseButton=(Button)findViewById(R.id.else_button);
         elseButton.setOnClickListener(new View.OnClickListener() {
             @Override

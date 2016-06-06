@@ -1,9 +1,11 @@
-package com.lius.sudo;
+package com.lius.sudo.Activity;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Window;
+
+import com.lius.sudo.R;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -26,7 +28,7 @@ public class WelcomeActivity extends Activity{
                 finish();
             }
         };
-        timer.schedule(task,1000*1);
+        timer.schedule(task,1000*2);
 
     }
 }

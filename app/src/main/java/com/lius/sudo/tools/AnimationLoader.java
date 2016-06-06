@@ -1,4 +1,4 @@
-package com.lius.sudo;
+package com.lius.sudo.tools;
 
 import android.content.Context;
 import android.view.animation.AlphaAnimation;

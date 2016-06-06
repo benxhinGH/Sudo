@@ -1,4 +1,4 @@
-package com.lius.sudo;
+package com.lius.sudo.Dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -6,27 +6,35 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
+import android.widget.Button;
+
+import com.lius.sudo.tools.AnimationLoader;
+import com.lius.sudo.R;
+import com.lius.sudo.Activity.StartActivity;
 
 /**
- * Created by Administrator on 2016/4/7 0007.
+ * Created by Administrator on 2016/4/13 0013.
  */
-public class KeyDialog extends Dialog {
-
-    private final View keys[]=new View[10];
+public class LevelDialog extends Dialog{
 
     private AnimationSet animIn,animOut;
     private View mDialogView;
 
-    private SudoView sudoView;
+    private Button[] levelButton=new Button[5];
 
-    public KeyDialog(Context context,SudoView sudoView){
-        super(context,R.style.color_dialog);
-        this.sudoView=sudoView;
+
+    public LevelDialog(Context context){
+        this(context,0);
+    }
+    public LevelDialog(Context context,int theme){
+        super(context, R.style.color_dialog);
         init();
     }
+    //获取加载动画
     private void init(){
-        animIn=AnimationLoader.getInAnimation(getContext());
+        animIn= AnimationLoader.getInAnimation(getContext());
         animOut=AnimationLoader.getOutAnimation(getContext());
+
     }
 
     @Override
@@ -41,41 +49,33 @@ public class KeyDialog extends Dialog {
 
         mDialogView=getWindow().getDecorView().findViewById(android.R.id.content);
 
-        //setTitle("KeyDialog");
-        setContentView(R.layout.keypad);
+        //initView();
+
+        //setTitle("levelDialog");
+        setContentView(R.layout.leveldialog);
         findViews();
         setListeners();
 
     }
-
+    //private void initView(){
+     //   View contentView=View.inflate()
+    //}
 
     private void findViews(){
-        keys[0]=findViewById(R.id.keypad_1);
-        keys[1]=findViewById(R.id.keypad_2);
-        keys[2]=findViewById(R.id.keypad_3);
-        keys[3]=findViewById(R.id.keypad_4);
-        keys[4]=findViewById(R.id.keypad_5);
-        keys[5]=findViewById(R.id.keypad_6);
-        keys[6]=findViewById(R.id.keypad_7);
-        keys[7]=findViewById(R.id.keypad_8);
-        keys[8]=findViewById(R.id.keypad_9);
-        keys[9]=findViewById(R.id.clear);
-
-
+        levelButton[0]=(Button)findViewById(R.id.level_1);
+        levelButton[1]=(Button)findViewById(R.id.level_2);
+        levelButton[2]=(Button)findViewById(R.id.level_3);
+        levelButton[3]=(Button)findViewById(R.id.level_4);
+        levelButton[4]=(Button)findViewById(R.id.level_5);
     }
-
-    private void returnResult(int num){
-        sudoView.setSelectedNum(num);
-        mDialogView.startAnimation(animOut);
-    }
-
     private void setListeners(){
-        for(int i=0;i<keys.length;++i){
+        for(int i=0;i<5;++i){
             final int t=i+1;
-            keys[i].setOnClickListener(new View.OnClickListener() {
+            levelButton[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    returnResult(t);
+                    StartActivity.level=t;
+                    mDialogView.startAnimation(animOut);
                 }
             });
         }
@@ -100,4 +100,5 @@ public class KeyDialog extends Dialog {
     private void callDismiss(){
         dismiss();
     }
+
 }

@@ -1,4 +1,4 @@
-package com.lius.sudo;
+package com.lius.sudo.Dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -11,7 +11,6 @@ import android.graphics.Path;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -20,6 +19,10 @@ import android.view.animation.AnimationSet;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.lius.sudo.tools.AnimationLoader;
+import com.lius.sudo.tools.DisplayUtil;
+import com.lius.sudo.R;
 
 /**
  * Created by lius on 16-6-5.
@@ -34,12 +37,12 @@ public class LastDialog extends Dialog{
     private View mDialogView;
     private TextView t1,t2,t3,t4,mPositiveBtn;
     public LastDialog(Context context) {
-        super(context,R.style.color_dialog);
+        super(context, R.style.color_dialog);
         this.context=context;
         init();
     }
     private void init(){
-        animIn=AnimationLoader.getInAnimation(getContext());
+        animIn= AnimationLoader.getInAnimation(getContext());
         animOut=AnimationLoader.getOutAnimation(getContext());
 
     }
@@ -92,7 +95,7 @@ public class LastDialog extends Dialog{
 
         t1.setText("版本：1.0");
         t2.setText("制作：风雨夜未央");
-        t3.setText("icon设计：张运" );
+        t3.setText("icon设计：会跑路的提百万" );
         t4.setText("QQ:824797605");
 
         mPositiveBtn.setText("好的");
