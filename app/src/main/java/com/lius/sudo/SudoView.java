@@ -33,6 +33,12 @@ public class SudoView extends View{
         super(context,attrs);
         mContext=context;
     }
+
+    public SudoView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        mContext=context;
+    }
+
     @Override
     protected void onSizeChanged(int w,int h,int oldw,int oldh){
         this.width=w/9f;

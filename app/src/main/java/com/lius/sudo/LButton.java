@@ -29,6 +29,14 @@ public class LButton extends Button implements View.OnTouchListener{
         super(context);
     }
 
+    public LButton(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init();
+        customLButton();
+    }
+
+
+
     private void init(){
         Resources resources=getResources();
         mButtonColor=resources.getColor(R.color.lbutton_default_color);
