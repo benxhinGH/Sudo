@@ -93,7 +93,7 @@ public class LastDialog extends Dialog{
         llTop.setBackgroundDrawable(shapeDrawable);
 
 
-        t1.setText("版本：1.0");
+        t1.setText("版本：1.0.2");
         t2.setText("制作：风雨夜未央");
         t3.setText("icon设计：会跑路的提百万" );
         t4.setText("QQ:824797605");
