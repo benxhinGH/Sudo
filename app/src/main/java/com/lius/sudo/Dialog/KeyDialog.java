@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 
@@ -44,6 +45,11 @@ public class KeyDialog extends Dialog {
         super.onCreate(savedInstanceState);
 
         mDialogView=getWindow().getDecorView().findViewById(android.R.id.content);
+        WindowManager.LayoutParams lp=this.getWindow().getAttributes();
+        lp.alpha=0.6f;
+        lp.dimAmount=0.15f;
+        this.getWindow().setAttributes(lp);
+        this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 
         //setTitle("KeyDialog");
         setContentView(R.layout.keypad);

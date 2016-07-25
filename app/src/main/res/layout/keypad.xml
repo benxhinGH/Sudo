@@ -4,17 +4,16 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:stretchColumns="*">
+    android:stretchColumns="*"
+    android:paddingTop="50dp">
     <TableRow>
         <com.lius.sudo.LButton
-
             android:layout_marginRight="10dp"
             android:id="@+id/keypad_1"
             android:text="1"
             android:textColor="#ffffff"
             android:textSize="18sp"/>
         <com.lius.sudo.LButton
-
             android:layout_marginRight="10dp"
             android:id="@+id/keypad_2"
             android:text="2"
@@ -27,7 +26,7 @@
             android:textSize="18sp"/>
     </TableRow>
     <TableRow
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="20dp">
         <com.lius.sudo.LButton
             android:layout_marginRight="10dp"
             android:id="@+id/keypad_4"
@@ -47,7 +46,7 @@
             android:textSize="18sp"/>
     </TableRow>
     <TableRow
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="20dp">
         <com.lius.sudo.LButton
             android:layout_marginRight="10dp"
             android:id="@+id/keypad_7"
@@ -67,7 +66,7 @@
             android:textSize="18sp"/>
     </TableRow>
     <TableRow
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="20dp">
         <com.lius.sudo.LButton
             android:layout_width="35dp"
             android:layout_marginRight="10dp"
