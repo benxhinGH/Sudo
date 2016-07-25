@@ -6,6 +6,7 @@ package com.lius.sudo;
 public class Number {
     private int value;
     private boolean isDefault;
+    private boolean isRepeated;
     public void setValue(int value){
         this.value=value;
     }
@@ -17,5 +18,11 @@ public class Number {
     }
     public boolean getIsDefault(){
         return isDefault;
+    }
+    public void setIsRepeated(boolean isRepeated){
+        this.isRepeated=isRepeated;
+    }
+    public boolean getIsRepeated(){
+        return isRepeated;
     }
 }

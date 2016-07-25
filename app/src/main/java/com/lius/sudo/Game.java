@@ -42,17 +42,31 @@ public class Game {
             if(n!=0){
                 sudo[i].setValue(n);
                 sudo[i].setIsDefault(true);
+                sudo[i].setIsRepeated(false);
             }else{
                 sudo[i].setValue(0);
                 sudo[i].setIsDefault(false);
+                sudo[i].setIsRepeated(false);
             }
         }
         return sudo;
     }
 
     public void setNum(int x, int y, int num){
-        if(num==10)sudoku[y*9+x].setValue(0);
-        else sudoku[y*9+x].setValue(num);
+        Number number=sudoku[y*9+x];
+        if(num==10){
+            number.setValue(0);
+            number.setIsRepeated(false);
+            refreshSudoku();
+        }
+        else {
+            number.setValue(num);
+            if(checkIfRepeat(x,y,num)){
+                number.setIsRepeated(true);
+            }else{
+                number.setIsRepeated(false);
+            }
+        }
     }
     public boolean ifIsDefault(int x,int y){
         return sudoku[x+y*9].getIsDefault();
@@ -140,5 +154,35 @@ public class Game {
             if(arch.charAt(i+81)=='0')sudoku[i].setIsDefault(true);
             else sudoku[i].setIsDefault(false);
         }
+        refreshSudoku();
+    }
+    private boolean checkIfRepeat(int x,int y,int num){
+        //判断所在行列是否有重复数字
+        for(int i=0;i<9;++i){
+            if(sudoku[i+9*y].getValue()==num&&i!=x)return true;
+            if(sudoku[x+9*i].getValue()==num&&i!=y)return true;
+        }
+        //判断所在小九宫格是否有重复数字
+        for(int i=x/3*3;i<x/3*3+2;++i)
+            for(int j=y/3*3;j<y/3+2;++j){
+            if(sudoku[i+9*j].getValue()==num){
+                if(i!=x&&j!=y)return true;
+            }
+        }
+        return false;
+
+    }
+    private void refreshSudoku(){
+        for(int i=0;i<81;++i){
+            if(sudoku[i].getIsDefault()==false){
+                int tempX=i/9;
+                int tempY=i%9;
+                if(checkIfRepeat(i%9,i/9,sudoku[i].getValue()))sudoku[i].setIsRepeated(true);
+                else sudoku[i].setIsRepeated(false);
+            }
+        }
+    }
+    public boolean ifIsRepeated(int x,int y){
+        return sudoku[x+9*y].getIsRepeated();
     }
 }

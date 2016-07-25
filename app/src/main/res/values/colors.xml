@@ -18,5 +18,7 @@
     <color name="color_type_info">#79b3e4</color>
     <color name="listview_gray">#BFBFBF</color>
     <color name="color_type_wrong">#ed7861</color>
+    <color name="wrong_gray">#919191</color>
+    <color name="wrong_red">#DD0000</color>
 
 </resources>

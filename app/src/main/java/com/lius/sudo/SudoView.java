@@ -54,37 +54,46 @@ public class SudoView extends View{
         canvas.drawRect(0, 0, getWidth(), getHeight(), backgroundPaint);
 
         Paint darkPaint=new Paint();
-        darkPaint.setColor(getResources().getColor(R.color.sudoDark));
+        //darkPaint.setColor(getResources().getColor(R.color.sudoDark));
+        darkPaint.setColor(getResources().getColor(R.color.purple));
+        darkPaint.setStrokeWidth(8);
+
 
         Paint whitePaint=new Paint();
         whitePaint.setColor(getResources().getColor(R.color.sudoWhite));
+        whitePaint.setStrokeWidth(2);
 
         Paint lightPaint=new Paint();
-        lightPaint.setColor(getResources().getColor(R.color.sudoLight));
+        //lightPaint.setColor(getResources().getColor(R.color.sudoLight));
+        lightPaint.setColor(getResources().getColor(R.color.purple));
+        lightPaint.setStrokeWidth(4);
+
         for(int i=0;i<9;++i){
             canvas.drawLine(0,i*height,getWidth(),i*height,lightPaint);
-            canvas.drawLine(0,i*height+1,getWidth(),i*height+1,whitePaint);
+            //canvas.drawLine(0,i*height+1,getWidth(),i*height+1,whitePaint);
             canvas.drawLine(i*width,0,i*width,getHeight(),lightPaint);
-            canvas.drawLine(i*width+1,0,i*width+1,getHeight(),whitePaint);
+            //canvas.drawLine(i*width+1,0,i*width+1,getHeight(),whitePaint);
         }
         for(int i=0;i<9;++i){
             if(i%3!=0)continue;
             canvas.drawLine(0,i*height,getWidth(),i*height,darkPaint);
-            canvas.drawLine(0,i*height+1,getWidth(),i*height+1,whitePaint);
+            //canvas.drawLine(0,i*height+1,getWidth(),i*height+1,whitePaint);
             canvas.drawLine(i*width,0,i*width,getHeight(),darkPaint);
-            canvas.drawLine(i*width+1,0,i*width+1,getHeight(),whitePaint);
+            //canvas.drawLine(i*width+1,0,i*width+1,getHeight(),whitePaint);
         }
         Paint numberPaint=new Paint();
         numberPaint.setColor(getResources().getColor(R.color.light_purple));
         numberPaint.setStyle(Paint.Style.STROKE);
-        numberPaint.setTextSize(height * 0.75f);
+        //numberPaint.setTextSize(height * 0.75f);
+        numberPaint.setTextSize(height * 0.6f);
         numberPaint.setTextAlign(Paint.Align.CENTER);
         numberPaint.setAntiAlias(true);
 
         Paint userNumberPaint=new Paint();
         userNumberPaint.setColor(Color.BLACK);
         userNumberPaint.setStyle(Paint.Style.STROKE);
-        userNumberPaint.setTextSize(height * 0.75f);
+        //userNumberPaint.setTextSize(height * 0.75f);
+        userNumberPaint.setTextSize(height*0.6f);
         userNumberPaint.setTextAlign(Paint.Align.CENTER);
         userNumberPaint.setAntiAlias(true);
 
@@ -97,6 +106,10 @@ public class SudoView extends View{
             for(int j=0;j<9;++j){
                 if(game.ifIsDefault(i,j)){
                     canvas.drawText(game.getNumberString(i,j),i*width+x,j*height+y,numberPaint);
+                }else if(game.ifIsRepeated(i,j)){
+                    userNumberPaint.setColor(getResources().getColor(R.color.wrong_red));
+                    canvas.drawText(game.getNumberString(i, j), i * width + x, j * height + y, userNumberPaint);
+                    userNumberPaint.setColor(Color.BLACK);
                 }else{
                     canvas.drawText(game.getNumberString(i,j),i*width+x,j*height+y,userNumberPaint);
                 }
