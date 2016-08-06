@@ -5,7 +5,8 @@
     android:orientation="vertical">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="0dp"
+        android:layout_weight="7"
         android:background="@color/purple">
         <TextView
             android:layout_width="wrap_content"
@@ -20,35 +21,55 @@
             android:layout_height="wrap_content"
             android:id="@+id/menu_button"
             android:layout_alignParentRight="true"
-            android:background="@drawable/menu_icon"/>
-        <!--<Button
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:id="@+id/save_button"
-            android:background="@drawable/save_button_img"
-            android:layout_toLeftOf="@+id/reset_button"
-            android:layout_centerVertical="true" />
-        <Button
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/reset_button"
-            android:background="@drawable/reset_button_seletor"
-            android:layout_toLeftOf="@+id/complete_button"
-            android:layout_centerVertical="true"
-            />
-        <Button
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/complete_button"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/confirm_button_seletor"
-            />-->
+            android:background="@drawable/menu_icon"
+            android:layout_centerVertical="true"/>
     </RelativeLayout>
     <com.lius.sudo.SudoView
         android:id="@+id/first_sudoview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="0dp"
+        android:layout_weight="89"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4"
+        android:background="@color/purple">
+        <TextView
+            android:id="@+id/currenttime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="用时："
+            android:textSize="15sp"
+            android:textColor="#ffffff"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"/>
+        <TextView
+            android:id="@+id/time_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:layout_toRightOf="@+id/currenttime"
+            android:textSize="15sp"
+            android:layout_centerVertical="true"/>
+        <TextView
+            android:id="@+id/currentlevel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="级别："
+            android:textColor="#ffffff"
+            android:layout_centerInParent="true"
+            android:textSize="15sp"
+            />
+        <TextView
+            android:id="@+id/gamelevel_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:textSize="15sp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/currentlevel"/>
+
+    </RelativeLayout>
 
 
 </LinearLayout>

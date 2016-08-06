@@ -40,6 +40,9 @@ public class MainActivity extends Activity {
 
     final int SHOW_LOADING_DIALOG=0;
     final int CLOSE_LOADING_DIALOG=1;
+    final int UPDATE_TIME_TEXTVIEW=2;
+
+    private boolean timerThreadStop=false;
 
     public static int DIALOGFLAG=0;
     public static final int COMPLETE=1;
@@ -50,6 +53,8 @@ public class MainActivity extends Activity {
     private LocalReceiver localReceiver;
     private IntentFilter intentFilter;
     private Dialog mLoadingDialog;
+    private TextView timeTV;
+    private TextView levelTV;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -60,6 +65,8 @@ public class MainActivity extends Activity {
                 case CLOSE_LOADING_DIALOG:
                     closeProgressDialog();
                     break;
+                case UPDATE_TIME_TEXTVIEW:
+                    timeTV.setText(myTimer.getStringTime());
                 default:
                     break;
             }
@@ -72,6 +79,10 @@ public class MainActivity extends Activity {
 
     private SudoView sudoView;
 
+    private MyTimer myTimer;
+
+    private Thread timerThread;
+
 
     @Override
     protected void onResume() {
@@ -83,7 +94,10 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.main);
+        myTimer=new MyTimer();
         sudoView=(SudoView)findViewById(R.id.first_sudoview);
+        timeTV=(TextView)findViewById(R.id.time_textview);
+        levelTV=(TextView)findViewById(R.id.gamelevel_textview);
         Intent intent=getIntent();
         String flag=intent.getStringExtra("flag");
         String data=intent.getStringExtra("data");
@@ -166,12 +180,38 @@ public class MainActivity extends Activity {
 
             }
         });
+
+        //设置级别文本框的内容
+        switch (StartActivity.level){
+            case 1:
+                levelTV.setText("入门级");
+                break;
+            case 2:
+                levelTV.setText("初级");
+                break;
+            case 3:
+                levelTV.setText("普通");
+                break;
+            case 4:
+                levelTV.setText("高级");
+                break;
+            case 5:
+                levelTV.setText("骨灰级");
+                break;
+            default:
+                break;
+        }
         localBroadcastManager=LocalBroadcastManager.getInstance(this);
         localReceiver=new LocalReceiver();
         intentFilter=new IntentFilter();
         intentFilter.addAction("com.lius.sudo.GENERATESUDOKU");
         intentFilter.addAction("com.lius.sudo.FINISH");
         localBroadcastManager.registerReceiver(localReceiver,intentFilter);
+
+
+        //启动计时线程
+        timerThread=new Thread(new myTimerThread());
+        timerThread.start();
     }
     class LocalReceiver extends BroadcastReceiver{
         @Override
@@ -216,6 +256,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        //使用共享变量的方法终止线程
+        if(timerThread.isAlive())timerThreadStop=true;
         localBroadcastManager.unregisterReceiver(localReceiver);
     }
     private void showProgressDialog() {
@@ -256,5 +298,22 @@ public class MainActivity extends Activity {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT));// 设置布局
         return loadingDialog;
+    }
+    class myTimerThread implements Runnable{
+
+        @Override
+        public void run() {
+            while (!timerThreadStop){
+                myTimer.timePlusOne();
+                Message msg=new Message();
+                msg.what=UPDATE_TIME_TEXTVIEW;
+                handler.sendMessage(msg);
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }
