@@ -34,4 +34,10 @@ public class MyTimer {
 
         return strTime;
     }
+    public int getIntegerTime(){
+        return currentTime;
+    }
+    public void setCurrentTime(int currentTime){
+        this.currentTime=currentTime;
+    }
 }

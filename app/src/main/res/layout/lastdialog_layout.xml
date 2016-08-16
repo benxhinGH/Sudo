@@ -111,7 +111,7 @@
             android:gravity="center"
             android:text="OK"
             android:minHeight="40dp"
-            android:textColor="#676767" />
+            android:textColor="#9b59b6" />
 
     </RelativeLayout>
 

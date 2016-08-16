@@ -5,19 +5,35 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/level_textview"
-        android:text="级别文本框"
-        android:textSize="20sp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"/>
+        android:id="@+id/playername_tv"
+        android:text="玩家姓名"
+        android:textSize="24sp"
+        android:layout_margin="10dp"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/arctime_textview"
-        android:text="存档时间文本框"
-        android:layout_below="@+id/level_textview"
+        android:id="@+id/level_tv"
+        android:text="级别文本框"
+        android:textSize="16sp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="20dp"
+        android:layout_toRightOf="@+id/playername_tv"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/timeused_tv"
+        android:text="已用时：耗时"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@+id/level_tv"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/arctime_tv"
+        android:text="存档时间文本框"
+        android:layout_below="@+id/timeused_tv"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp" />
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

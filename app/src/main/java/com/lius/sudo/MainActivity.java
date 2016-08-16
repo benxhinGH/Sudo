@@ -3,11 +3,13 @@ package com.lius.sudo;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -25,9 +27,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lius.sudo.Activity.StartActivity;
+import com.lius.sudo.DB.SudoOpenHelper;
 import com.lius.sudo.Dialog.LDialog;
 import com.lius.sudo.Dialog.LevelDialog;
 import com.lius.sudo.Dialog.MenuDialog;
+import com.lius.sudo.Dialog.MyDialog;
+import com.lius.sudo.tools.DBUtil;
 
 import java.util.Date;
 import java.text.SimpleDateFormat;
@@ -41,6 +46,11 @@ public class MainActivity extends Activity {
     final int SHOW_LOADING_DIALOG=0;
     final int CLOSE_LOADING_DIALOG=1;
     final int UPDATE_TIME_TEXTVIEW=2;
+
+    private String playerName;
+    private boolean isCanceled;
+    private boolean isFromArchive=false;
+    private int archiveId;
 
     private boolean timerThreadStop=false;
 
@@ -83,10 +93,17 @@ public class MainActivity extends Activity {
 
     private Thread timerThread;
 
+    private SudoOpenHelper sudoOpenHelper;
+
+
+
+
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("currentdata",sudoView.getSudokuArch());
+        outState.putInt("currentconsumetime",myTimer.getIntegerTime());
     }
 
     @Override
@@ -98,16 +115,28 @@ public class MainActivity extends Activity {
         sudoView=(SudoView)findViewById(R.id.first_sudoview);
         timeTV=(TextView)findViewById(R.id.time_textview);
         levelTV=(TextView)findViewById(R.id.gamelevel_textview);
-        Intent intent=getIntent();
-        String flag=intent.getStringExtra("flag");
-        String data=intent.getStringExtra("data");
-        if(flag.equals("0")){
+        //获取数据库帮助类对象
+        sudoOpenHelper=new SudoOpenHelper(this,"Sudoku.db",null,1);
+        if(savedInstanceState==null){
+            Intent intent=getIntent();
+            String flag=intent.getStringExtra("flag");
+            String data=intent.getStringExtra("data");
+            if(flag.equals("0")){
 
-            sudoView.setSudoku(data);
-        }else if(flag.equals("1")){
+                sudoView.setSudoku(data);
+            }else if(flag.equals("1")){
+                isFromArchive=true;
+                archiveId=intent.getIntExtra("id",-1);
+                sudoView.setSudokuFromArch(data);
+                myTimer.setCurrentTime(intent.getIntExtra("consumetime",0));
 
-            sudoView.setSudokuFromArch(data);
+
+            }
+        }else{
+            sudoView.setSudokuFromArch(savedInstanceState.getString("currentdata"));
+            myTimer.setCurrentTime(savedInstanceState.getInt("currentconsumetime"));
         }
+
         menuButton=(Button)findViewById(R.id.menu_button);
         menuButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,42 +157,101 @@ public class MainActivity extends Activity {
                                 }
                                 break;
                             case SAVE:
-                                SharedPreferences.Editor editor=getSharedPreferences("sudoarchdata",MODE_PRIVATE).edit();
-                                SimpleDateFormat formatter=new SimpleDateFormat("yyyy年MM月dd日HH:mm:ss");
-                                Date curDate=new Date(System.currentTimeMillis());//获取当前时间
-                                String time=formatter.format(curDate);
-                                String level="";
-                                switch (StartActivity.level){
-                                    case 1:
-                                        level="入门级";
-                                        break;
-                                    case 2:
-                                        level="初级";
-                                        break;
-                                    case 3:
-                                        level="普通";
-                                        break;
-                                    case 4:
-                                        level="高级";
-                                        break;
-                                    case 5:
-                                        level="骨灰级";
-                                        break;
-                                    default:
-                                        break;
+                                if(isFromArchive==true){
+                                    SQLiteDatabase db= DBUtil.getDatabase(MainActivity.this);
+                                    //获取存档时间
+                                    SimpleDateFormat formatter=new SimpleDateFormat("yyyy年MM月dd日HH:mm:ss");
+                                    Date curDate=new Date(System.currentTimeMillis());//获取当前时间
+                                    String archiveTime=formatter.format(curDate);
+                                    //获取当前耗时
+                                    int consumeTime=myTimer.getIntegerTime();
+                                    //获取数独数据和颜色数据
+                                    String data=sudoView.getSudokuArch();
+                                    String number=data.substring(0,81);
+                                    String color=data.substring(81);
+                                    ContentValues contentValues=new ContentValues();
+                                    contentValues.put("archivetime",archiveTime);
+                                    contentValues.put("consumetime",consumeTime);
+                                    contentValues.put("number",number);
+                                    contentValues.put("color",color);
+                                    db.update("Sudoku",contentValues,"id=?",new String[]{Integer.toString(archiveId)});
+                                    Toast.makeText(MainActivity.this,"存档已更新",Toast.LENGTH_SHORT).show();
+                                    break;
                                 }
-                                String str=time+level;
-                                Log.d("MainActivity","格式化后的时间为"+str);
-                                String data=sudoView.getSudokuArch();
-                                editor.putString(str,data);
-                                editor.commit();
-                                Toast.makeText(MainActivity.this,"已存档",Toast.LENGTH_SHORT).show();
+
+                                MyDialog myDialog=new MyDialog(MainActivity.this);
+                                myDialog.setReturnDataListener(new MyDialog.ReturnDataListener() {
+                                    @Override
+                                    public void returnData(String data) {
+                                        if(data.equals("取消"))isCanceled=true;
+                                        else if(data.equals(""))playerName="蜜汁玩家";
+                                        else playerName=data;
+                                    }
+                                });
+                                myDialog.show();
+                                myDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                    @Override
+                                    public void onDismiss(DialogInterface dialog) {
+                                        if(isCanceled!=true){
+                                            //获取SQLiteDataBase实例，若数据库不存在则创建数据库
+                                            SQLiteDatabase db=sudoOpenHelper.getWritableDatabase();
+                                            //获取要存入的数据
+                                            //获取游戏级别
+                                            String level="";
+                                            switch (StartActivity.level){
+                                                case 1:
+                                                    level="入门级";
+                                                    break;
+                                                case 2:
+                                                    level="初级";
+                                                    break;
+                                                case 3:
+                                                    level="普通";
+                                                    break;
+                                                case 4:
+                                                    level="高级";
+                                                    break;
+                                                case 5:
+                                                    level="骨灰级";
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                            //获取存档时间
+                                            SimpleDateFormat formatter=new SimpleDateFormat("yyyy年MM月dd日HH:mm:ss");
+                                            Date curDate=new Date(System.currentTimeMillis());//获取当前时间
+                                            String archiveTime=formatter.format(curDate);
+                                            //获取当前耗时
+                                            int consumeTime=myTimer.getIntegerTime();
+                                            Log.i("MainActivity","当前耗时为"+consumeTime);
+                                            //获取数独数据和颜色数据
+                                            String data=sudoView.getSudokuArch();
+                                            String number=data.substring(0,81);
+                                            Log.i("MainActivity","number数据为"+number);
+                                            String color=data.substring(81);
+                                            Log.d("MainActivity","color数据为"+color);
+                                            //组装数据
+                                            ContentValues contentValues=new ContentValues();
+                                            contentValues.put("player",playerName);
+                                            contentValues.put("level",level);
+                                            contentValues.put("archivetime",archiveTime);
+                                            contentValues.put("consumetime",consumeTime);
+                                            contentValues.put("number",number);
+                                            contentValues.put("color",color);
+                                            //插入数据
+                                            db.insert("Sudoku",null,contentValues);
+
+                                            Toast.makeText(MainActivity.this,"已存档",Toast.LENGTH_SHORT).show();
+
+                                        }
+
+                                    }
+                                });
 
 
-                                SharedPreferences sharedPreferences=getSharedPreferences("sudoarchdata",MODE_PRIVATE);
-                                String testStr=sharedPreferences.getString(str,"");
-                                Log.d("MainActivity","测试保存数据"+testStr);
                                 break;
+
+
                             case RESET:
                                 sudoView.resetGame();
                                 break;

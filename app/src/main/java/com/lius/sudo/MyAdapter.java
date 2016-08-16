@@ -1,8 +1,7 @@
 package com.lius.sudo;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.media.Image;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.lius.sudo.tools.DBUtil;
 
 import java.util.List;
 
@@ -20,12 +21,11 @@ public class MyAdapter extends BaseAdapter{
     private List<ArchiveDate> data;
     private Context mContext;
     private LayoutInflater layoutInflater;
-    private SharedPreferences preferences;
-    public MyAdapter(Context context,List<ArchiveDate> data,SharedPreferences preferences){
+    public MyAdapter(Context context,List<ArchiveDate> data){
         mContext=context;
         this.data=data;
+
         layoutInflater=LayoutInflater.from(context);
-        this.preferences=preferences;
     }
 
 
@@ -50,15 +50,19 @@ public class MyAdapter extends BaseAdapter{
         if(convertView==null){
             holder=new ViewHolder();
             convertView=layoutInflater.inflate(R.layout.listitem_layout,null);
-            holder.levelTextView=(TextView)convertView.findViewById(R.id.level_textview);
-            holder.timeTextView=(TextView)convertView.findViewById(R.id.arctime_textview);
+            holder.playerNameTv=(TextView)convertView.findViewById(R.id.playername_tv);
+            holder.levelTv=(TextView)convertView.findViewById(R.id.level_tv);
+            holder.consumeTimeTv=(TextView)convertView.findViewById(R.id.timeused_tv);
+            holder.archiveTimeTv=(TextView)convertView.findViewById(R.id.arctime_tv);
             holder.deleteImage=(ImageView)convertView.findViewById(R.id.delete_image);
             convertView.setTag(holder);
         }else{
             holder=(ViewHolder)convertView.getTag();
         }
-        holder.levelTextView.setText(data.get(position).getLevel());
-        holder.timeTextView.setText(data.get(position).getArchTime());
+        holder.playerNameTv.setText(data.get(position).getPlayerName());
+        holder.levelTv.setText(data.get(position).getLevel());
+        holder.consumeTimeTv.setText("已用时:"+"    "+data.get(position).getConsumeStrTime());
+        holder.archiveTimeTv.setText("存档时间:"+" "+data.get(position).getArchiveTime());
         holder.deleteImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,17 +72,21 @@ public class MyAdapter extends BaseAdapter{
         return convertView;
     }
     class ViewHolder{
-        TextView levelTextView;
-        TextView timeTextView;
+        TextView playerNameTv;
+        TextView levelTv;
+        TextView consumeTimeTv;
+        TextView archiveTimeTv;
         ImageView deleteImage;
     }
     private void deleteArchData(int position){
-        SharedPreferences.Editor editor=preferences.edit();
-        String str=data.get(position).getPrefName();
-        editor.remove(str);
-        editor.commit();
+        int intId=data.get(position).getId();
+        Log.d("MyAdapter","从data中获取到的id为"+intId);
+        String id=Integer.toString(intId);
+        Log.d("MyAdapter","转换后的id为"+id);
+        DBUtil.getDatabase(mContext).delete("Sudoku","id=?",new String[]{id});
         data.remove(position);
         notifyDataSetChanged();
-        Toast.makeText(mContext,"已删除",Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext,"存档已删除",Toast.LENGTH_SHORT).show();
     }
+
 }

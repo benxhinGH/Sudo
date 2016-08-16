@@ -90,7 +90,12 @@ public class MenuDialog extends Dialog{
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                callDismiss();
+                mDialogView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        callDismiss();
+                    }
+                });
 
             }
 

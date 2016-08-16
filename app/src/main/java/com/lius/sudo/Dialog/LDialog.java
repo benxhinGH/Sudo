@@ -58,11 +58,6 @@ public class LDialog extends Dialog{
         init();
         mContext=context;
     }
-    //public LDialog(Context context, int theme){
-    //    super(context,R.style.color_dialog);
-     //   init();
-
-    //}
 
     @Override
     protected void onStart() {
@@ -120,15 +115,8 @@ public class LDialog extends Dialog{
         LinearLayout llTop = (LinearLayout) findViewById(R.id.llTop);
         llTop.setBackgroundDrawable(shapeDrawable);
 
-        //mTitleTv.setText("this's title");
         mContentTv.setText(getContentTextByType(dialogType));
-        //mPositiveBtn.setText("ok");
-        //mPositiveBtn.setOnClickListener(new View.OnClickListener() {
-        //    @Override
-         //   public void onClick(View view) {
-         //       mDialogView.startAnimation(animOut);
-         //   }
-       // });
+
         leftButton.setText(getButtonTextByType(dialogType,LEFT));
         leftButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,8 +136,12 @@ public class LDialog extends Dialog{
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                callDismiss();
-                Log.d("LDialog","打电话callDismiss打电话callDismiss打电话callDismiss打电话callDismiss");
+                mDialogView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        callDismiss();
+                    }
+                });
 
             }
 
@@ -239,18 +231,7 @@ public class LDialog extends Dialog{
 
         }
     }
-    /*private int getColorByType(int type){
-        switch (type){
-            case DIALOG_TYPE_SUCCESS:
-                return R.color.color_type_success;
-            case DIALOG_TYPE_WRONG:
-                return R.color.color_type_wrong;
-            default:
-                break;
-        }
-        return R.color.color_type_success;
 
-    }*/
     private int getIconByType(int type){
         switch (type){
             case DIALOG_TYPE_SUCCESS:
@@ -309,40 +290,4 @@ public class LDialog extends Dialog{
         }
     }
 
-
-
-    /*private void initAnimListener() {
-        animOut.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                mDialogView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        callDismiss();
-                    }
-                });
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-        });
-    }
-
-    private void initListener() {
-        mPositiveBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mOnPositiveListener != null) {
-                    mOnPositiveListener.onClick(PromptDialog.this);
-                }
-            }
-        });
-
-        initAnimListener();
-    }*/
 }

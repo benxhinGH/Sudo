@@ -28,6 +28,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/archive_listview"
-        android:listSelector="@drawable/listview_seletor"/>
+        android:listSelector="@drawable/listview_seletor"
+        android:divider="#8e44ad"
+        android:dividerHeight="10px"/>
 
 </LinearLayout>
