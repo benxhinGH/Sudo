@@ -3,8 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
+    android:gravity="center"
+    android:paddingBottom="60dp">
 
-    >
     <TextView
         android:id="@+id/nametextview"
         android:layout_width="wrap_content"
@@ -13,7 +14,7 @@
         android:textSize="50sp"
         android:textColor="@color/purple"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="120dp"/>
+        />
     <com.lius.sudo.LButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,7 +23,7 @@
         android:text="开始游戏"
         android:layout_below="@+id/nametextview"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:textSize="20sp"
         android:textColor="#ffffff"/>
     <com.lius.sudo.LButton
@@ -40,9 +41,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minWidth="200dp"
+        android:id="@+id/rank_button"
+        android:text="排行榜"
+        android:layout_below="@+id/read_archive_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:textSize="20sp"
+        android:textColor="#ffffff"/>
+    <com.lius.sudo.LButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="200dp"
         android:id="@+id/else_button"
         android:text="关于菜牛"
-        android:layout_below="@+id/read_archive_button"
+        android:layout_below="@+id/rank_button"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:textSize="20sp"

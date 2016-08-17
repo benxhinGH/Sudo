@@ -57,8 +57,8 @@ public class MyDialog extends Dialog{
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(editText.getText().length()==8)
-                    Toast.makeText(getContext(),"最大长度为8个字符",Toast.LENGTH_SHORT).show();
+                if(editText.getText().length()==5)
+                    Toast.makeText(getContext(),"最大长度为5个字符",Toast.LENGTH_SHORT).show();
 
             }
         });

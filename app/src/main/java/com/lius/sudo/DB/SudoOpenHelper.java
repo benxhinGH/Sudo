@@ -18,6 +18,13 @@ public class SudoOpenHelper extends SQLiteOpenHelper{
             +"consumetime integer,"
             +"number text,"
             +"color text)";
+    //Rank表建表语句
+    public static final String CREATE_RANK="create table Rank("
+            +"id integer primary key autoincrement,"
+            +"player text,"
+            +"level text,"
+            +"consumestrtime text,"
+            +"consumeinttime integer)";
     public SudoOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
@@ -25,6 +32,7 @@ public class SudoOpenHelper extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_SUDOKU);//创建Sudoku表
+        db.execSQL(CREATE_RANK);//创建Rank表
     }
 
     @Override

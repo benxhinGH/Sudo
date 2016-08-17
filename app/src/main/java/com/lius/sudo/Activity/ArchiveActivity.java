@@ -2,7 +2,6 @@ package com.lius.sudo.Activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -10,16 +9,13 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.lius.sudo.ArchiveDate;
+import com.lius.sudo.model.ArchiveDate;
 import com.lius.sudo.MainActivity;
-import com.lius.sudo.MyAdapter;
+import com.lius.sudo.adapter.MyAdapter;
 import com.lius.sudo.R;
-import com.lius.sudo.tools.DBUtil;
+import com.lius.sudo.DB.DBUtil;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by lius on 16-5-7.
@@ -38,7 +34,7 @@ public class ArchiveActivity extends Activity{
         setContentView(R.layout.archive_activity_layout);
 
 
-        archive_list= DBUtil.getDataFromDB(this);
+        archive_list= DBUtil.getArchiveDataFromDB(this);
 
 
         myAdapter=new MyAdapter(this,archive_list);

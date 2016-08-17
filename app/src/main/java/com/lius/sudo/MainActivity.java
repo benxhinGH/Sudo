@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
@@ -32,7 +31,9 @@ import com.lius.sudo.Dialog.LDialog;
 import com.lius.sudo.Dialog.LevelDialog;
 import com.lius.sudo.Dialog.MenuDialog;
 import com.lius.sudo.Dialog.MyDialog;
-import com.lius.sudo.tools.DBUtil;
+import com.lius.sudo.DB.DBUtil;
+import com.lius.sudo.model.MyTimer;
+import com.lius.sudo.tools.OtherUtil;
 
 import java.util.Date;
 import java.text.SimpleDateFormat;
@@ -148,12 +149,48 @@ public class MainActivity extends Activity {
                     public void onDismiss(DialogInterface dialogInterface) {
                         switch (DIALOGFLAG){
                             case COMPLETE:
-                                if(sudoView.game.judgeResult()){
-                                    new LDialog(MainActivity.this,0).show();
+                                if(!sudoView.game.judgeResult()){
+                                    new LDialog(MainActivity.this,1).show();
 
 
                                 }else{
-                                    new LDialog(MainActivity.this,1).show();
+                                    final String tempStrTime=myTimer.getStringTime();
+                                    final int tempIntTime=myTimer.getIntegerTime();
+                                    MyDialog myDialog=new MyDialog(MainActivity.this);
+                                    myDialog.setReturnDataListener(new MyDialog.ReturnDataListener() {
+                                        @Override
+                                        public void returnData(String data) {
+                                            if(data.equals("取消"))isCanceled=true;
+                                            else if(data.equals(""))playerName="蜜汁玩家";
+                                            else playerName=data;
+                                        }
+                                    });
+                                    myDialog.show();
+                                    myDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                        @Override
+                                        public void onDismiss(DialogInterface dialog) {
+                                            if(isCanceled!=true){
+                                                SQLiteDatabase db=DBUtil.getDatabase(MainActivity.this);
+                                                ContentValues contentValues=new ContentValues();
+                                                contentValues.put("player",playerName);
+                                                contentValues.put("level", OtherUtil.getStringLevel());
+                                                contentValues.put("consumestrtime",tempStrTime);
+                                                contentValues.put("consumeinttime",tempIntTime);
+                                                db.insert("Rank",null,contentValues);
+                                                Toast.makeText(MainActivity.this,"成绩已加入排行榜",Toast.LENGTH_SHORT).show();
+                                                LDialog mLDialog=new LDialog(MainActivity.this,0);
+                                                mLDialog.setContentTv("恭喜你!\n"+playerName+"解题成功！\n"+"用时："+tempStrTime
+                                                        +"\n成绩已加入排行榜");
+                                                mLDialog.show();
+                                            }else {
+                                                LDialog mLDialog=new LDialog(MainActivity.this,0);
+                                                mLDialog.setContentTv("恭喜你！\n解题成功！\n"+"用时："+tempStrTime
+                                                        +"\n成绩未加入排行榜");
+                                                mLDialog.show();
+                                            }
+
+                                        }
+                                    });
                                 }
                                 break;
                             case SAVE:
@@ -309,27 +346,30 @@ public class MainActivity extends Activity {
                // Log.d("MainActivity","收到GENERATESUDOKU广播收到GENERATESUDOKU广播收到GENERATESUDOKU广播");
                 Dialog ld=new LevelDialog(MainActivity.this);
                 ld.show();
+                ld.setCancelable(false);
                 ld.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialogInterface) {
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Message msg=new Message();
-                                msg.what=SHOW_LOADING_DIALOG;
-                                handler.sendMessage(msg);
-                                sudoView.regenerateSudoku();
-                                Message msg1=new Message();
-                                msg1.what=CLOSE_LOADING_DIALOG;
-                                handler.sendMessage(msg1);
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        sudoView.invalidate();
-                                    }
-                                });
-                            }
-                        }).start();
+
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Message msg=new Message();
+                                    msg.what=SHOW_LOADING_DIALOG;
+                                    handler.sendMessage(msg);
+                                    sudoView.regenerateSudoku();
+                                    Message msg1=new Message();
+                                    msg1.what=CLOSE_LOADING_DIALOG;
+                                    handler.sendMessage(msg1);
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            sudoView.invalidate();
+                                        }
+                                    });
+                                }
+                            }).start();
+
                     }
                 });
 

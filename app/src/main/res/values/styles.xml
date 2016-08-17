@@ -50,5 +50,24 @@
         <item name="android:background">@null</item>
         <item name="android:padding">8dp</item>
     </style>
+    <style name="rankTvStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#000000</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_margin">10dp</item>
+    </style>
+    <style name="rankItemStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">#000000</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_margin">10dp</item>
+        <item name="android:maxWidth">35dp</item>
+    </style>
 
 </resources>

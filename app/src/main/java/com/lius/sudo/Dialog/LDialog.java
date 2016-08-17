@@ -19,10 +19,12 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.lius.sudo.Activity.StartActivity;
 import com.lius.sudo.tools.AnimationLoader;
 import com.lius.sudo.tools.DisplayUtil;
 import com.lius.sudo.R;
@@ -40,6 +42,7 @@ public class LDialog extends Dialog{
     private static final Bitmap.Config BITMAP_CONFIG = Bitmap.Config.ARGB_8888;
     private static final int DIALOG_TYPE_SUCCESS=0;
     private static final int DIALOG_TYPE_WRONG=1;
+    private static final int DIALOG_TYPE_WARNING=2;
     private static final int LEFT=0;
     private static final int RIGHT=1;
     private int DISMISSFLAG=0;
@@ -50,9 +53,10 @@ public class LDialog extends Dialog{
     private TextView mContentTv,leftButton,rightButton;
     private Context mContext;
     private LocalBroadcastManager localBroadcastManager;
+    private String mContentTvStr;
+    private TempBtnListener tempBtnListener;
 
     public LDialog(Context context,int dialogType) {
-        //this(context,0);
         super(context, R.style.color_dialog);
         this.dialogType=dialogType;
         init();
@@ -75,6 +79,7 @@ public class LDialog extends Dialog{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(dialogType==0)setCancelable(false);
         DISMISSFLAG=0;
         localBroadcastManager=LocalBroadcastManager.getInstance(mContext);
         initView();
@@ -238,17 +243,22 @@ public class LDialog extends Dialog{
                 return R.drawable.ic_success;
             case DIALOG_TYPE_WRONG:
                 return R.drawable.ic_wrong;
+            case DIALOG_TYPE_WARNING:
+                return R.drawable.ic_help;
             default:
                 break;
         }
         return R.drawable.ic_success;
     }
     private String getContentTextByType(int type){
+        if(mContentTvStr!=null)return mContentTvStr;
         switch (type){
             case DIALOG_TYPE_SUCCESS:
                 return "解题成功！";
             case DIALOG_TYPE_WRONG:
                 return "存在错误！";
+            case DIALOG_TYPE_WARNING:
+                return "清空排行榜数据，是否确认？";
             default:
                 break;
         }
@@ -264,6 +274,10 @@ public class LDialog extends Dialog{
                 if(leftOrRight==LEFT)return "返回主界面";
                 else if(leftOrRight==RIGHT)return "返回游戏";
                 break;
+            case DIALOG_TYPE_WARNING:
+                if(leftOrRight==LEFT)return "取消";
+                else if(leftOrRight==RIGHT)return "确认";
+                break;
             default:
                 break;
         }
@@ -276,6 +290,7 @@ public class LDialog extends Dialog{
                 public void onClick(View view) {
                     mDialogView.startAnimation(animOut);
                     DISMISSFLAG=2;
+                    StartActivity.level=-1;
 
                 }
             });
@@ -287,7 +302,27 @@ public class LDialog extends Dialog{
 
                 }
             });
+        }else if(dialogType==DIALOG_TYPE_WARNING){
+            rightButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(tempBtnListener!=null)
+                        tempBtnListener.onClick("confirm");
+                    mDialogView.startAnimation(animOut);
+                }
+            });
+
         }
+    }
+    public void setContentTv(String str){
+        mContentTvStr=str;
+
+    }
+    public void setTempBtnListener(TempBtnListener tempBtnListener){
+        this.tempBtnListener=tempBtnListener;
+    }
+    public interface TempBtnListener{
+        public void onClick(String str);
     }
 
 }

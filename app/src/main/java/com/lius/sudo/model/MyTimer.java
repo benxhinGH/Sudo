@@ -1,4 +1,4 @@
-package com.lius.sudo;
+package com.lius.sudo.model;
 
 /**
  * Created by 刘有泽 on 2016/8/6.

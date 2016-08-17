@@ -39,6 +39,7 @@ public class StartActivity extends Activity {
     private Button elseButton;
     private Button readArchiveButton;
     private Button quitButton;
+    private Button rankButton;
     private Dialog mLoadingDialog;
     private Handler handler = new Handler() {
         @Override
@@ -126,6 +127,24 @@ public class StartActivity extends Activity {
             @Override
             public void onClick(View view) {
                 finish();
+            }
+        });
+        rankButton=(Button)findViewById(R.id.rank_button);
+        rankButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LevelDialog ld=new LevelDialog(StartActivity.this);
+                ld.show();
+                ld.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        if(level!=-1){
+                            Intent intent=new Intent(StartActivity.this,RankActivity.class);
+                            startActivity(intent);
+
+                        }
+                    }
+                });
             }
         });
     }

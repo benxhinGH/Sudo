@@ -27,7 +27,7 @@
             android:textColorHint="#DDDDDD"
             android:textSize="20sp"
             android:textColor="#000000"
-            android:maxLength="8"
+            android:maxLength="5"
             android:background="#ffffff"
             android:gravity="center"
             android:padding="15dp"/>
