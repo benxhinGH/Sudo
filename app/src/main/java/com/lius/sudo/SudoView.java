@@ -59,10 +59,6 @@ public class SudoView extends View{
         darkPaint.setStrokeWidth(20);
 
 
-        Paint whitePaint=new Paint();
-        whitePaint.setColor(getResources().getColor(R.color.sudoWhite));
-        whitePaint.setStrokeWidth(2);
-
         Paint lightPaint=new Paint();
         //lightPaint.setColor(getResources().getColor(R.color.sudoLight));
         lightPaint.setColor(getResources().getColor(R.color.purple));

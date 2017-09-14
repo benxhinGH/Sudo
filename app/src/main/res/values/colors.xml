@@ -7,8 +7,6 @@
     <color name="sudoWhite">#ffffff</color>
     <color name="sudoLight">#64c6d4ef</color>
     <color name="sudoDark">#6456648f</color>
-    <color name="purple">#8e44ad</color>
-    <color name="light_purple">#9b59b6</color>
     <color name="lbutton_default_color">#9b59b6</color>
     <color name="lbutton_default_shadow_color">#8e44ad</color>
     <color name="color_dialog_title">#303030</color>
@@ -21,4 +19,7 @@
     <color name="wrong_gray">#919191</color>
     <color name="wrong_red">#DD0000</color>
 
+    <color name="white">#ffffff</color>
+    <color name="purple">#8e44ad</color>
+    <color name="light_purple">#9b59b6</color>
 </resources>

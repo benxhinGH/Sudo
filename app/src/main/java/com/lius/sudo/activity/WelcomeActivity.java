@@ -23,12 +23,12 @@ public class WelcomeActivity extends AppCompatActivity{
         TimerTask task=new TimerTask() {
             @Override
             public void run() {
-                Intent intent=new Intent(WelcomeActivity.this,StartActivity.class);
+                Intent intent=new Intent(WelcomeActivity.this,GameActivity.class);
                 startActivity(intent);
                 finish();
             }
         };
-        timer.schedule(task,1000*2);
+        timer.schedule(task,1000);
 
     }
 }

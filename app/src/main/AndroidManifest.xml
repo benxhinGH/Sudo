@@ -8,7 +8,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-
         <activity android:name=".MainActivity"
             android:launchMode="singleTop">
         </activity>
@@ -26,6 +25,8 @@
         </activity>
         <activity android:name=".activity.RankActivity">
         </activity>
+
+        <activity android:name=".activity.GameActivity"/>
 
     </application>
 
