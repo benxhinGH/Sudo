@@ -1,6 +1,5 @@
-package com.lius.sudo.Activity;
+package com.lius.sudo.activity;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,10 +7,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -29,7 +28,7 @@ import com.lius.sudo.R;
 /**
  * Created by Administrator on 2016/4/12 0012.
  */
-public class StartActivity extends Activity {
+public class StartActivity extends AppCompatActivity {
 
     final int SHOW_LOADING_DIALOG=0;
     final int CLOSE_LOADING_DIALOG=1;
@@ -66,7 +65,6 @@ public class StartActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.startlayout);
         startGameButton = (Button) findViewById(R.id.startgame_button);
         startGameButton.setOnClickListener(new View.OnClickListener() {

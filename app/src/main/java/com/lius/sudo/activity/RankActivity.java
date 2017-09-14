@@ -1,8 +1,8 @@
-package com.lius.sudo.Activity;
+package com.lius.sudo.activity;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -12,20 +12,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lius.sudo.Dialog.LDialog;
-import com.lius.sudo.MainActivity;
 import com.lius.sudo.R;
 import com.lius.sudo.adapter.RankLvAdapter;
 import com.lius.sudo.model.RankItemData;
 import com.lius.sudo.DB.DBUtil;
 import com.lius.sudo.tools.OtherUtil;
 
-import java.security.cert.LDAPCertStoreParameters;
 import java.util.List;
 
 /**
  * Created by 刘有泽 on 2016/8/17.
  */
-public class RankActivity extends Activity{
+public class RankActivity extends AppCompatActivity{
     private ListView rankLv;
     private List<RankItemData> rankItemDatas;
     private RankLvAdapter rankLvAdapter;

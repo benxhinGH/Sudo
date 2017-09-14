@@ -1,9 +1,8 @@
-package com.lius.sudo.Activity;
+package com.lius.sudo.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Window;
+import android.support.v7.app.AppCompatActivity;
 
 import com.lius.sudo.R;
 
@@ -13,11 +12,12 @@ import java.util.TimerTask;
 /**
  * Created by lius on 16-6-5.
  */
-public class WelcomeActivity extends Activity{
+public class WelcomeActivity extends AppCompatActivity{
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.welcome_layout);
         Timer timer=new Timer();
         TimerTask task=new TimerTask() {

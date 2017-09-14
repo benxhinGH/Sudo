@@ -10,7 +10,7 @@ import android.widget.Button;
 
 import com.lius.sudo.tools.AnimationLoader;
 import com.lius.sudo.R;
-import com.lius.sudo.Activity.StartActivity;
+import com.lius.sudo.activity.StartActivity;
 
 /**
  * Created by Administrator on 2016/4/13 0013.

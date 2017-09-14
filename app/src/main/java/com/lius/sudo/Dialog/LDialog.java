@@ -19,12 +19,11 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.lius.sudo.Activity.StartActivity;
+import com.lius.sudo.activity.StartActivity;
 import com.lius.sudo.tools.AnimationLoader;
 import com.lius.sudo.tools.DisplayUtil;
 import com.lius.sudo.R;

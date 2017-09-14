@@ -1,28 +1,35 @@
-package com.lius.sudo;
+package com.lius.sudo.business;
 
-
-/**
- * Created by Administrator on 2016/4/13 0013.
- */
 import android.graphics.Point;
 import android.util.Log;
+
+import com.lius.sudo.model.SudokuPuzzle;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * 采用挖洞算法实现。不同难度将会有不同的最小填充格子数和已知格子数
- *
+ * Created by Administrator on 2017/9/14 0014.
  */
-public class GenerateSudoku {
-    private int[][] orginData;  //保存初始状态的数独
-    // 初始化生成数组
-    private int[][] sudokuData = {{0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0, 0}};
-    // 终盘数组
+
+public class SudokuGenerator {
+
+    private static SudokuGenerator sudokuGenerator;
+
+    //数独初盘数组，即最后生成的数独题
+    private int[][] orginData;
+    // 初始化生成数组，生成中用
+    private int[][] sudokuData = {
+            {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}};
+    //数独终盘数组，即数独题解
     private int[][] resultData;
     // 最小填充格子数
     private int minFilled;
@@ -33,7 +40,24 @@ public class GenerateSudoku {
 
     private Random ran = new Random();
 
-    public GenerateSudoku(int level) {
+    private SudokuGenerator() {
+
+    }
+
+    public static SudokuGenerator getInstance(){
+        if(sudokuGenerator==null){
+            sudokuGenerator=new SudokuGenerator();
+        }
+        return sudokuGenerator;
+    }
+
+    public SudokuPuzzle getSudokuPuzzle(int level){
+        generate(level);
+        SudokuPuzzle puzzle=new SudokuPuzzle(orginData,resultData,level);
+        return puzzle;
+    }
+
+    private void generate(int level){
         if (level < 0 || level > 6) {
             this.level = 3;
         } else {
@@ -70,7 +94,6 @@ public class GenerateSudoku {
         for (int i = 0; i < 9; i++) {
             System.arraycopy(sudokuData[i], 0, orginData[i], 0, 9);
         }
-        Log.d("GenerateSudoku","从构造方法进入，等级为"+level+"出题完毕");
     }
 
     /**
@@ -426,16 +449,5 @@ public class GenerateSudoku {
         return true;
     }
 
-    public String getStringData(){
-        String s="";
-        for(int i=0;i<9;++i)
-            for(int j=0;j<9;++j){
-                s=s+orginData[i][j];
-            }
-        return s;
-    }
-
-
 
 }
-

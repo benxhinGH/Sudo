@@ -1,6 +1,5 @@
 package com.lius.sudo;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
@@ -13,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.lius.sudo.Activity.StartActivity;
+import com.lius.sudo.activity.StartActivity;
 import com.lius.sudo.DB.SudoOpenHelper;
 import com.lius.sudo.Dialog.LDialog;
 import com.lius.sudo.Dialog.LevelDialog;
@@ -42,7 +42,7 @@ import java.text.SimpleDateFormat;
 /**
  * Created by Administrator on 2016/4/6 0006.
  */
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
     final int SHOW_LOADING_DIALOG=0;
     final int CLOSE_LOADING_DIALOG=1;

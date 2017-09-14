@@ -9,7 +9,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
-import com.lius.sudo.Activity.StartActivity;
+import com.lius.sudo.activity.StartActivity;
 import com.lius.sudo.Dialog.KeyDialog;
 
 

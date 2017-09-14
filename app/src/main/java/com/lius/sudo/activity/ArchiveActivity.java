@@ -1,8 +1,8 @@
-package com.lius.sudo.Activity;
+package com.lius.sudo.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * Created by lius on 16-5-7.
  */
-public class ArchiveActivity extends Activity{
+public class ArchiveActivity extends AppCompatActivity{
 
     private ListView archive_listview;
     private List<ArchiveDate> archive_list;

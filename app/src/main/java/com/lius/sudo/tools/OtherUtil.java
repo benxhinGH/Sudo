@@ -1,6 +1,6 @@
 package com.lius.sudo.tools;
 
-import com.lius.sudo.Activity.StartActivity;
+import com.lius.sudo.activity.StartActivity;
 
 /**
  * Created by 刘有泽 on 2016/8/17.
