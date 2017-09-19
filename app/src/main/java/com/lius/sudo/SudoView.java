@@ -23,6 +23,8 @@ public class SudoView extends View{
     private int selectedX;
     private int selectedY;
     private Context mContext;
+
+
     Game game=new Game();
     public SudoView(Context context){
         super(context);
@@ -130,9 +132,9 @@ public class SudoView extends View{
 
         return true;
 
-
-
     }
+
+
 
     public void setSelectedNum(int num){
         game.setNum(selectedX,selectedY,num);

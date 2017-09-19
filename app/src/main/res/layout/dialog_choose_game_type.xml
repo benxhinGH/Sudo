@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_bg"
+    android:gravity="center"
+    android:padding="30dp">
+    <Button
+        android:id="@+id/new_game_btn"
+        style="@style/btnDialog"
+        android:text="新游戏"/>
+    <Button
+        android:id="@+id/archive_btn"
+        style="@style/btnDialog"
+        android:text="读取存档"
+        android:layout_marginTop="10dp"/>
+
+</LinearLayout>

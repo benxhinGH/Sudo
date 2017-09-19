@@ -8,6 +8,8 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <!--toolbar标题栏文字颜色-->
+        <item name="android:textColorPrimary">#ffffff</item>
     </style>
     <style name="MyTitleBackground">
         <item name="android:background">@color/purple</item>
@@ -51,6 +53,22 @@
         <item name="android:textSize">16sp</item>
         <item name="android:background">@null</item>
         <item name="android:padding">8dp</item>
+    </style>
+
+    <style name="btnActivityMainInterface">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minWidth">180dp</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:background">@drawable/btn_bg</item>
+    </style>
+    <style name="btnDialog">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:minWidth">150dp</item>
+        <item name="android:background">@drawable/btn_bg</item>
     </style>
     <style name="rankTvStyle">
         <item name="android:layout_width">wrap_content</item>
