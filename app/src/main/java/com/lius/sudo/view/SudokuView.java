@@ -26,8 +26,16 @@ import com.lius.sudo.utilities.Util;
 
 public class SudokuView extends View{
 
+    private Canvas canvas;
+
+    //是否绘制选中格子提示
+    private boolean drawCellPrompt=false;
+
     private float cellWidth;
     private float cellHeight;
+
+    private float viewWidth;
+    private float viewHeight;
 
     //view在当前屏幕中的绝对坐标
     private int[] viewAbsCoordinate;
@@ -37,6 +45,7 @@ public class SudokuView extends View{
     private Paint backgroundPaint=new Paint();
     private Paint linePaint=new Paint();
     private Paint numberPaint=new Paint();
+    private Paint promptPaint=new Paint();
 
     private Context context;
 
@@ -77,9 +86,15 @@ public class SudokuView extends View{
 
     @Override
     protected void onDraw(Canvas canvas) {
+        this.canvas=canvas;
         drawBackground(canvas);
         drawNumbers(canvas);
+        if(drawCellPrompt){
+            drawSelectedCellPrompt(cellX,cellY);
+        }
         super.onDraw(canvas);
+        viewWidth=getWidth();
+        viewHeight=getHeight();
     }
 
     private void drawBackground(Canvas canvas){
@@ -105,7 +120,7 @@ public class SudokuView extends View{
 
     private void drawNumbers(Canvas canvas){
         if(sudokuData==null)return;
-        numberPaint.setColor(getResources().getColor(R.color.light_purple));
+        numberPaint.setColor(getResources().getColor(R.color.purple));
         numberPaint.setStyle(Paint.Style.STROKE);
         numberPaint.setTextSize(cellHeight * 0.45f);
         numberPaint.setTextAlign(Paint.Align.CENTER);
@@ -136,6 +151,16 @@ public class SudokuView extends View{
 
     }
 
+    private void drawSelectedCellPrompt(int cellX,int cellY){
+        promptPaint.setColor(getResources().getColor(R.color.purple));
+        promptPaint.setAlpha(100);
+        float left=cellX*cellWidth;
+        float top=cellY*cellHeight;
+        float right=left+cellWidth;
+        float bottom=top+cellHeight;
+        canvas.drawRect(left,top,right,bottom,promptPaint);
+    }
+
     public void setPuzzleData(SudokuNumber[][] sudokuData){
         this.sudokuData=sudokuData;
         invalidate();
@@ -164,14 +189,14 @@ public class SudokuView extends View{
         return windowManager;
     }
 
-    private void showNumberSelecter(float startX,float startY){
+    private void showNumberSelecter(float startX,float startY,float endX,float endY){
         if(numberSelecter==null){
             numberSelecter=new NumberSelecter(context);
         }
         numberSelecter.setStartX(startX);
         numberSelecter.setStartY(startY);
-        numberSelecter.setEndX(startX);
-        numberSelecter.setEndY(startY);
+        numberSelecter.setEndX(endX);
+        numberSelecter.setEndY(endY);
         WindowManager windowManager=getWindowManager();
         int screenWidth=windowManager.getDefaultDisplay().getWidth();
         int screenHeight=windowManager.getDefaultDisplay().getHeight();
@@ -197,12 +222,14 @@ public class SudokuView extends View{
             case MotionEvent.ACTION_DOWN:
                 cellX=(int)(event.getX()/cellWidth);
                 cellY=(int)(event.getY()/cellHeight);
+                //绘制选中格子提示
+                drawCellPrompt=true;
+                invalidate();
                 //当前view的绝对坐标
                 int[] abs=getSudokuViewAbsCoordinate();
-                float cellCenterX=cellX*cellWidth+cellWidth/2;
-                float cellCenterY=cellY*cellWidth+cellHeight/2;
                 if(sudokuData[cellY][cellX].getType()!= SudokuNumber.NumberType.DEFAULT){
-                    showNumberSelecter(cellCenterX+abs[0],cellCenterY+abs[1]);
+                    drawSelectedCellPrompt(cellX,cellY);
+                    showNumberSelecter(viewWidth/2+abs[0],viewHeight/2+abs[1],event.getRawX(),event.getRawY());
                 }else {
                     //如果点击的是默认数字的格子，则返回false，不再接受事件序列剩下的事件
                     return false;
@@ -213,9 +240,11 @@ public class SudokuView extends View{
                 numberSelecter.endChanged(event.getRawX(),event.getRawY());
                 break;
             case MotionEvent.ACTION_UP:
+                drawCellPrompt=false;
                 removeNumberSelecter();
                 int number=numberSelecter.getCurrentSelectedNumber();
                 putNumber(cellY,cellX,number);
+
                 break;
         }
 
@@ -248,6 +277,8 @@ class NumberSelecter extends View {
 
     private Context context;
 
+    private Paint paint=new Paint();
+
     private float startX;
     private float startY;
 
@@ -257,13 +288,13 @@ class NumberSelecter extends View {
     private int statusBarHeight;
 
     //默认文字所在圆的半径,单位dp
-    private int defaultTextPathRadius=20;
+    private int defaultTextPathRadius=80;
     //默认文字所在圆的半径,单位px
     private int defaultTextPathRadiusPixel=-1;
     //默认圆环宽度，单位dp
-    private int defaultRingWidth=15;
+    private int defaultRingWidth=50;
     //默认文字大小,单位sp
-    private int defaultTextSize=10;
+    private int defaultTextSize=30;
 
 
     private int currentSelectedNumber;
@@ -288,19 +319,21 @@ class NumberSelecter extends View {
 
     @Override
     public void draw(Canvas canvas) {
-        Paint paint=new Paint();
         drawRing(canvas);
         drawNumber(canvas);
         //绘制中心圆点
+        //drawCenterPoint(canvas);
+        //绘制线
+        //canvas.drawLine(startX,startY,endX,endY,paint);
+        super.draw(canvas);
+    }
+
+    private void drawCenterPoint(Canvas canvas){
         paint.setColor(Color.BLACK);
         paint.setStyle(Paint.Style.FILL);
         canvas.drawCircle(startX,startY,Util.dp2px(context,2),paint);
         paint.setStyle(Paint.Style.STROKE);
         canvas.drawCircle(startX,startY,Util.dp2px(context,5),paint);
-        //绘制线
-        canvas.drawLine(startX,startY,endX,endY,paint);
-
-        super.draw(canvas);
     }
 
     private void drawRing(Canvas canvas){

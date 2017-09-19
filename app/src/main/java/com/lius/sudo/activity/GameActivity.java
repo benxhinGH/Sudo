@@ -56,7 +56,7 @@ public class GameActivity extends AppCompatActivity {
     private void addSudokuView(){
         sudokuView=new SudokuView(this);
         int screenWidth= Util.getScreenSize(this).x;
-        int leftMargin=Util.dp2px(this,30);
+        int leftMargin=Util.dp2px(this,10);
         int width=screenWidth-leftMargin*2;
         LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(width,width);
         params.leftMargin=leftMargin;
