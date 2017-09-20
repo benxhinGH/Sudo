@@ -8,7 +8,7 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 
-import com.lius.sudo.tools.AnimationLoader;
+import com.lius.sudo.animation.AnimationLoader;
 import com.lius.sudo.R;
 import com.lius.sudo.SudoView;
 

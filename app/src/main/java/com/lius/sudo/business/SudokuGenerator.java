@@ -53,6 +53,7 @@ public class SudokuGenerator {
 
     public SudokuPuzzle getSudokuPuzzle(int level){
         generate(level);
+        solve(orginData,true);
         SudokuPuzzle puzzle=new SudokuPuzzle(orginData,resultData,level);
         return puzzle;
     }

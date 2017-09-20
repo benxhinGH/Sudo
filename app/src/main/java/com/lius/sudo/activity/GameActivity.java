@@ -5,11 +5,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -32,6 +35,8 @@ public class GameActivity extends AppCompatActivity {
 
     private SudokuView sudokuView;
 
+    private AlertDialog gameMenuDialog;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +45,13 @@ public class GameActivity extends AppCompatActivity {
         addViews();
         toolbar.setBackgroundColor(getResources().getColor(R.color.purple));
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         handleIntent();
         checkFloatWindowPermission();
     }
@@ -84,6 +96,12 @@ public class GameActivity extends AppCompatActivity {
         gameController.setIfNewGame(true);
         gameController.setLevel(level);
         gameController.startGame();
+        gameController.setOnGameExitListener(new GameController.OnGameExitListener() {
+            @Override
+            public void onGameExit() {
+                finish();
+            }
+        });
 
     }
 
@@ -108,11 +126,55 @@ public class GameActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_menu:
-                Toast.makeText(this, "click menu", Toast.LENGTH_SHORT).show();
+                showDialogGameMenu();
                 break;
             default:
                 break;
         }
         return true;
     }
+
+    private void showDialogGameMenu(){
+        if(gameMenuDialog==null){
+            gameMenuDialog=createGameMenuDialog();
+        }
+        gameMenuDialog.show();
+    }
+
+    private AlertDialog createGameMenuDialog(){
+        final AlertDialog dialog=new AlertDialog.Builder(this).create();
+        dialog.show();
+        View dialogView= LayoutInflater.from(this).inflate(R.layout.dialog_game_menu,null);
+        dialog.getWindow().setContentView(dialogView);
+        //消除白色背景
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        //获取控件
+        Button gameFinishBtn=(Button)dialogView.findViewById(R.id.game_finish_btn);
+        Button gameSaveBtn=(Button)dialogView.findViewById(R.id.game_save_btn);
+        Button gameResetBtn=(Button)dialogView.findViewById(R.id.game_reset_btn);
+        gameFinishBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gameController.gameFinished();
+                dialog.dismiss();
+            }
+        });
+        gameSaveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(GameActivity.this, "save", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+        });
+        gameResetBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(GameActivity.this, "reset", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+        });
+        return dialog;
+    }
+
+
 }

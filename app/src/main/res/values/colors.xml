@@ -19,6 +19,10 @@
     <color name="wrong_gray">#919191</color>
     <color name="wrong_red">#DD0000</color>
 
+    <color name="red">#DD0000</color>
+    <color name="gray">#919191</color>
+    <color name="green">#25B925</color>
+
     <color name="white">#ffffff</color>
     <color name="purple">#8e44ad</color>
     <color name="light_purple">#9b59b6</color>

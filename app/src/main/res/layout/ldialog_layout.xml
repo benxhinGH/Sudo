@@ -13,15 +13,12 @@
         android:layout_height="75dp"
         android:gravity="center"
         android:orientation="vertical">
-
-
         <ImageView
             android:id="@+id/logoIv"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_margin="10dp"
             android:layout_gravity="center" />
-
     </LinearLayout>
 
     <LinearLayout

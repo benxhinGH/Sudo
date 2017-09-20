@@ -8,7 +8,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.widget.Button;
 
-import com.lius.sudo.tools.AnimationLoader;
+import com.lius.sudo.animation.AnimationLoader;
 import com.lius.sudo.MainActivity;
 import com.lius.sudo.R;
 

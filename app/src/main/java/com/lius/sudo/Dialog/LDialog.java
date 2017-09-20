@@ -24,7 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lius.sudo.activity.StartActivity;
-import com.lius.sudo.tools.AnimationLoader;
+import com.lius.sudo.animation.AnimationLoader;
 import com.lius.sudo.tools.DisplayUtil;
 import com.lius.sudo.R;
 
