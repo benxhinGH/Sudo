@@ -23,7 +23,6 @@ public class GameFailedDialog extends ColorDialogBase {
     private OnClickDialogBtnListener positiveListener;
     private OnClickDialogBtnListener negativeListener;
 
-    private int defaultBtnMargin=5;
 
 
     public GameFailedDialog(@NonNull Context context) {
@@ -39,7 +38,7 @@ public class GameFailedDialog extends ColorDialogBase {
 
     @Override
     void addButtons(LinearLayout btnGroupLayout) {
-        Button positiveBtn=new Button(context);
+        Button positiveBtn=getDefaultButton();
         positiveBtn.setText("知道了");
         positiveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,15 +48,9 @@ public class GameFailedDialog extends ColorDialogBase {
                 }
             }
         });
-        LinearLayout.LayoutParams positiveParams=new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
-        );
-        positiveParams.weight=1;
-        int margin=Util.dp2px(context,defaultBtnMargin);
-        positiveParams.setMargins(margin,margin,margin,margin);
-        positiveBtn.setLayoutParams(positiveParams);
 
-        Button negativeBtn=new Button(context);
+
+        Button negativeBtn=getDefaultButton();
         negativeBtn.setText("不玩了");
         negativeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,12 +60,7 @@ public class GameFailedDialog extends ColorDialogBase {
                 }
             }
         });
-        LinearLayout.LayoutParams negativeParams=new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
-        );
-        negativeParams.weight=1;
-        negativeParams.setMargins(margin,margin,margin,margin);
-        negativeBtn.setLayoutParams(negativeParams);
+
 
         btnGroupLayout.addView(positiveBtn);
         btnGroupLayout.addView(negativeBtn);

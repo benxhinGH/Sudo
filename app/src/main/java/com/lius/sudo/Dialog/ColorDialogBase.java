@@ -21,6 +21,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.widget.Button;
@@ -59,6 +60,8 @@ public abstract class ColorDialogBase extends Dialog {
     private int defaultRadius=6;
 
     private int defaultTriangleLayoutHeight=10;
+
+    private int defaultBtnMargin=6;
 
     private Animation animIn;
     private Animation animOut;
@@ -215,6 +218,22 @@ public abstract class ColorDialogBase extends Dialog {
     abstract void addButtons(LinearLayout btnGroupLayout);
 
     abstract int getDialogColor();
+
+    /**
+     * 供子类调用，获取一个拥有默认布局参数的button
+     * @return
+     */
+    protected Button getDefaultButton(){
+        Button button=new Button(context);
+        LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        int margin=Util.dp2px(context,defaultBtnMargin);
+        params.setMargins(margin,margin,margin,margin);
+        params.weight=1;
+        button.setLayoutParams(params);
+        return button;
+    }
 
 
     @Override

@@ -2,21 +2,35 @@ package com.lius.sudo.controller;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lius.sudo.Dialog.ColorDialogBase;
 import com.lius.sudo.Dialog.GameFailedDialog;
 import com.lius.sudo.Dialog.GameSuccessDialog;
 import com.lius.sudo.Dialog.OnClickDialogBtnListener;
+import com.lius.sudo.business.MyTimer;
 import com.lius.sudo.business.SudokuGenerator;
+import com.lius.sudo.database.SudokuOpenHelper;
+import com.lius.sudo.model.GameDataDBModel;
 import com.lius.sudo.model.SudokuNumber;
 import com.lius.sudo.model.SudokuPuzzle;
+import com.lius.sudo.utilities.Util;
 import com.lius.sudo.view.SudokuView;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 /**
  * Created by UsielLau on 2017/9/14 0014 17:42.
@@ -26,13 +40,17 @@ import com.lius.sudo.view.SudokuView;
 
 public class GameController {
 
-    final int SUDOKU_GENERATE_FINISHED=0;
+    private final int SUDOKU_GENERATE_FINISHED=0;
+    private final int UPDATE_TIMER=1;
 
     private GameSuccessDialog gameSuccessDialog;
     private GameFailedDialog gameFailedDialog;
 
     private OnGameExitListener onGameExitListener;
+    private OnGameStartListener onGameStartListener;
+    private OnGameFinishedListener onGameFinishedListener;
 
+    private TextView gameTimeTv;
 
 
     private boolean ifNewGame;
@@ -44,6 +62,8 @@ public class GameController {
     private Context context;
     private ProgressDialog progressDialog;
 
+    private MyTimer myTimer;
+
     private Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -51,6 +71,14 @@ public class GameController {
                 case SUDOKU_GENERATE_FINISHED:
                     SudokuPuzzle puzzle=(SudokuPuzzle)msg.obj;
                     sudokuGenerateFinished(puzzle);
+                    if(onGameStartListener!=null){
+                        onGameStartListener.onGameStart();
+                    }
+                    startTimer();
+                    break;
+                case UPDATE_TIMER:
+                    String time=(String)msg.obj;
+                    gameTimeTv.setText(time);
                     break;
                 default:
                     break;
@@ -82,6 +110,30 @@ public class GameController {
             startGameFromArchive();
         }
         setSudokuViewListener();
+
+    }
+
+
+    /**
+     * 开始计时
+     */
+    private void startTimer(){
+        if(myTimer==null){
+            myTimer=new MyTimer();
+        }
+        myTimer.setOnTimeChangedListener(new MyTimer.OnTimeChangedListener() {
+            @Override
+            public void onChanged() {
+                Message message=handler.obtainMessage(UPDATE_TIMER);
+                message.obj=myTimer.getTime();
+                handler.sendMessage(message);
+            }
+        });
+        myTimer.start();
+    }
+
+    public void setGameTimeTv(TextView gameTimeTv) {
+        this.gameTimeTv = gameTimeTv;
     }
 
     private void setSudokuViewListener(){
@@ -117,7 +169,27 @@ public class GameController {
     }
 
     private void startGameFromArchive(){
-
+        SudokuOpenHelper openHelper=new SudokuOpenHelper(context,"Sudoku.db",null,1);
+        SQLiteDatabase db=openHelper.getReadableDatabase();
+        Cursor cursor=db.query("Archive",null,"id = ?",new String[]{String.valueOf(archiveNumber)},null,null,null);
+        Log.d("GameController","查询到数据条数："+cursor.getCount());
+        cursor.moveToFirst();
+        byte[] gameData=cursor.getBlob(cursor.getColumnIndex("game_data"));
+        ByteArrayInputStream bais=new ByteArrayInputStream(gameData);
+        try {
+            ObjectInputStream ois=new ObjectInputStream(bais);
+            GameDataDBModel gameDataDBModel=(GameDataDBModel)ois.readObject();
+            level=gameDataDBModel.getLevel();
+            myTimer=new MyTimer(gameDataDBModel.getTime());
+            sudokuPuzzle=new SudokuPuzzle(gameDataDBModel.getAnswer());
+            sudokuView.setPuzzleData(gameDataDBModel.getSudokuNumbers());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        if(onGameStartListener!=null){
+            onGameStartListener.onGameStart();
+        }
+        startTimer();
     }
 
     private SudokuNumber[][] turnPuzzleToNumberArrType(SudokuPuzzle puzzle){
@@ -188,6 +260,8 @@ public class GameController {
         });
     }
 
+
+
     private GameSuccessDialog getGameSuccessDialog(){
         if(gameSuccessDialog==null){
             gameSuccessDialog=new GameSuccessDialog(context);
@@ -222,6 +296,7 @@ public class GameController {
     }
 
     private void gameExit(){
+        myTimer.stop();
         if(onGameExitListener!=null){
             onGameExitListener.onGameExit();
         }
@@ -235,30 +310,86 @@ public class GameController {
         for(int i=0;i<9;++i)
             for(int j=0;j<9;++j){
                 if(userAnswer[i][j].getValue()!=realAnswer[i][j]){
-//                    Log.d("Controller","正确答案为");
-//                    printArr(realAnswer);
-//                    Log.d("Controller","在i="+i+"和j="+j+"处出错");
                     return false;
                 }
             }
         return true;
     }
 
-//    private void printArr(int[][] arr){
-//        for(int i=0;i<arr.length;++i){
-//            for(int j=0;j<arr[i].length;++j){
-//                System.out.print(arr[i][j]+" ");
-//            }
-//            System.out.println();
-//        }
-//
-//    }
+    public void gameArchive(){
+        SudokuNumber[][] sudokuNumbers=sudokuView.getSudokuData();
+        int[][] answer=sudokuPuzzle.getAnswerArray();
+        GameDataDBModel gameDataDBModel=new GameDataDBModel(sudokuNumbers,answer,level,myTimer.getTimeSeconds());
+        saveArchiveDataToDatabase(gameDataDBModel);
+        gameExit();
+    }
+
+    private void saveArchiveDataToDatabase(GameDataDBModel gameData){
+        byte[] gameByteData=null;
+        ByteArrayOutputStream baos=new ByteArrayOutputStream();
+        try {
+            ObjectOutputStream oos=new ObjectOutputStream(baos);
+            oos.writeObject(gameData);
+            oos.flush();
+            gameByteData=baos.toByteArray();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                baos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        SudokuOpenHelper openHelper=new SudokuOpenHelper(context,"Sudoku.db",null,1);
+        SQLiteDatabase sdb=openHelper.getWritableDatabase();
+        ContentValues contentValues=new ContentValues();
+        contentValues.put("archive_time", Util.getSystemTime());
+        contentValues.put("game_data",gameByteData);
+        long res=sdb.insert("Archive",null,contentValues);
+
+        if(res==-1){
+            Toast.makeText(context, "save error", Toast.LENGTH_SHORT).show();
+        }else {
+            Toast.makeText(context, "save success", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+
+
+    public boolean isIfNewGame() {
+        return ifNewGame;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setOnGameFinishedListener(OnGameFinishedListener onGameFinishedListener) {
+        this.onGameFinishedListener = onGameFinishedListener;
+    }
+
+    public interface OnGameFinishedListener{
+        void OnGameFinished();
+    }
+
     public void setOnGameExitListener(OnGameExitListener onGameExitListener) {
         this.onGameExitListener = onGameExitListener;
     }
 
     public interface OnGameExitListener{
         void onGameExit();
+    }
+
+    public void setOnGameStartListener(OnGameStartListener onGameStartListener) {
+        this.onGameStartListener = onGameStartListener;
+    }
+
+    public interface OnGameStartListener{
+        void onGameStart();
     }
 
 

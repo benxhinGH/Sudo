@@ -1,10 +1,15 @@
 package com.lius.sudo.model;
 
+import java.io.Serializable;
+
 /**
  * Created by UsielLau on 2017/9/14 0014 22:13.
  */
 
-public class SudokuNumber {
+public class SudokuNumber implements Serializable{
+
+    static final long serialVersionUID=2l;
+
     private int value;
     private NumberType type;
 

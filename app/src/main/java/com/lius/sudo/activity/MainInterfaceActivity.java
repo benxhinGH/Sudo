@@ -90,7 +90,8 @@ public class MainInterfaceActivity extends AppCompatActivity {
         archiveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainInterfaceActivity.this, "click archive", Toast.LENGTH_SHORT).show();
+                Intent intent=new Intent(MainInterfaceActivity.this,ArchiveActivity.class);
+                startActivity(intent);
                 dialog.dismiss();
             }
         });

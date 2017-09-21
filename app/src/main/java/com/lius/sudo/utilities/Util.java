@@ -5,6 +5,10 @@ import android.graphics.Point;
 import android.util.TypedValue;
 import android.view.WindowManager;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * Created by UsielLau on 2017/9/14 0014 18:06.
  *
@@ -67,6 +71,48 @@ public class Util {
             statusBarHeight = context.getResources().getDimensionPixelSize(resourceId);
         }
         return statusBarHeight;
+    }
+
+
+    /**
+     * 根据数据等级返回文字等级
+     * @param level
+     * @return
+     */
+    public static String getGameLevelText(int level){
+        String res="";
+        switch (level){
+            case 1:
+                res="入门级";
+                break;
+            case 2:
+                res="初级";
+                break;
+            case 3:
+                res="普通";
+                break;
+            case 4:
+                res="高级";
+                break;
+            case 5:
+                res="骨灰级";
+                break;
+            default:
+                break;
+        }
+        return res;
+    }
+
+
+    /**
+     * 以X年X月X日X:X:Xde形式返回当前系统时间
+     * @return
+     */
+    public static String getSystemTime(){
+        SimpleDateFormat formatter=new SimpleDateFormat("yyyy年MM月dd日HH:mm:ss");
+        Date curDate=new Date(System.currentTimeMillis());//获取当前时间
+        String time=formatter.format(curDate);
+        return time;
     }
 
 }

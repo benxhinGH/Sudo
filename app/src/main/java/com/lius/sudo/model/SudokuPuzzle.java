@@ -15,6 +15,10 @@ public class SudokuPuzzle {
     //难度等级
     private int level;
 
+    public SudokuPuzzle(int[][] answerArray){
+        this.answerArray=answerArray;
+    }
+
     public SudokuPuzzle(int[][] puzzleArray, int[][] answerArray, int level) {
         this.puzzleArray = puzzleArray;
         this.answerArray = answerArray;

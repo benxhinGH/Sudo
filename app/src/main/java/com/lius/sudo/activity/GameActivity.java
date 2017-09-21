@@ -3,6 +3,8 @@ package com.lius.sudo.activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -12,11 +14,14 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lius.sudo.R;
+import com.lius.sudo.business.MyTimer;
 import com.lius.sudo.controller.GameController;
 import com.lius.sudo.utilities.Util;
 import com.lius.sudo.view.SudokuView;
@@ -27,15 +32,25 @@ import com.lius.sudo.view.SudokuView;
 
 public class GameActivity extends AppCompatActivity {
 
+
+
     private Toolbar toolbar;
 
     private GameController gameController;
 
     private LinearLayout rootLayout;
+    private LinearLayout bottomLayout;
+
+    private TextView gameLevelTv;
+    private TextView gameTimeTv;
+    private TextView gamePatternTv;
+
+    private int defaultSudokuViewMargin=10;
 
     private SudokuView sudokuView;
 
     private AlertDialog gameMenuDialog;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,12 +78,13 @@ public class GameActivity extends AppCompatActivity {
 
     private void addViews(){
         addSudokuView();
+        addBottomLayout();
     }
 
     private void addSudokuView(){
         sudokuView=new SudokuView(this);
         int screenWidth= Util.getScreenSize(this).x;
-        int leftMargin=Util.dp2px(this,10);
+        int leftMargin=Util.dp2px(this,defaultSudokuViewMargin);
         int width=screenWidth-leftMargin*2;
         LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(width,width);
         params.leftMargin=leftMargin;
@@ -76,6 +92,52 @@ public class GameActivity extends AppCompatActivity {
         params.topMargin=leftMargin;
         sudokuView.setLayoutParams(params);
         rootLayout.addView(sudokuView);
+    }
+
+    private void addBottomLayout(){
+        bottomLayout=new LinearLayout(this);
+        LinearLayout.LayoutParams bottomLayoutParams=new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
+        );
+        bottomLayout.setOrientation(LinearLayout.VERTICAL);
+        int margin=Util.dp2px(this,defaultSudokuViewMargin);
+        bottomLayoutParams.setMargins(margin,margin,margin,margin);
+        bottomLayout.setLayoutParams(bottomLayoutParams);
+        inflateBottomLayout();
+        rootLayout.addView(bottomLayout);
+    }
+
+    /**
+     * 填充底部布局
+     */
+    private void inflateBottomLayout(){
+        bottomLayout.addView(getGameLevelLayout());
+        bottomLayout.addView(getGameTimeLayout());
+        bottomLayout.addView(getGamePatternLayout());
+    }
+
+    private LinearLayout getGameLevelLayout(){
+        LinearLayout layout=(LinearLayout)getLayoutInflater().inflate(R.layout.my_prompt_layout,null);
+        TextView prompt_tv=(TextView)layout.findViewById(R.id.prompt_tv);
+        prompt_tv.setText("等级：");
+        gameLevelTv=(TextView)layout.findViewById(R.id.content_tv);
+        return layout;
+    }
+
+    private LinearLayout getGameTimeLayout(){
+        LinearLayout layout=(LinearLayout)getLayoutInflater().inflate(R.layout.my_prompt_layout,null);
+        TextView prompt_tv=(TextView)layout.findViewById(R.id.prompt_tv);
+        prompt_tv.setText("时间：");
+        gameTimeTv=(TextView)layout.findViewById(R.id.content_tv);
+        return layout;
+    }
+
+    private LinearLayout getGamePatternLayout(){
+        LinearLayout layout=(LinearLayout)getLayoutInflater().inflate(R.layout.my_prompt_layout,null);
+        TextView prompt_tv=(TextView)layout.findViewById(R.id.prompt_tv);
+        prompt_tv.setText("模式：");
+        gamePatternTv=(TextView)layout.findViewById(R.id.content_tv);
+        return layout;
     }
 
 
@@ -87,15 +149,30 @@ public class GameActivity extends AppCompatActivity {
             int gameLevel=extra.getInt("gameLevel");
             startGameAtLevel(gameLevel);
         }else {
-            int archiveNumber=extra.getInt("archiveNumber");
+            int archiveId=extra.getInt("archiveId");
+            startGameFromArchive(archiveId);
         }
+    }
+
+    private void startGameFromArchive(int archiveId){
+        gameController=new GameController(this,sudokuView);
+        gameController.setIfNewGame(false);
+        gameController.setArchiveNumber(archiveId);
+        setGameControllerListener();
+        gameController.startGame();
     }
 
     private void startGameAtLevel(int level){
         gameController=new GameController(this,sudokuView);
         gameController.setIfNewGame(true);
         gameController.setLevel(level);
+        setGameControllerListener();
         gameController.startGame();
+    }
+
+    private void setGameControllerListener(){
+        //将时间textview传入
+        gameController.setGameTimeTv(gameTimeTv);
         gameController.setOnGameExitListener(new GameController.OnGameExitListener() {
             @Override
             public void onGameExit() {
@@ -103,7 +180,20 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
+        gameController.setOnGameStartListener(new GameController.OnGameStartListener() {
+            @Override
+            public void onGameStart() {
+                gameLevelTv.setText(Util.getGameLevelText(gameController.getLevel()));
+                if(gameController.isIfNewGame()){
+                    gamePatternTv.setText("新游戏");
+                }else{
+                    gamePatternTv.setText("存档");
+                }
+            }
+        });
     }
+
+
 
     private void checkFloatWindowPermission(){
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
@@ -162,7 +252,7 @@ public class GameActivity extends AppCompatActivity {
         gameSaveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(GameActivity.this, "save", Toast.LENGTH_SHORT).show();
+                gameController.gameArchive();
                 dialog.dismiss();
             }
         });

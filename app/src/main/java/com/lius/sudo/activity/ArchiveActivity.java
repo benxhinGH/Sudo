@@ -1,20 +1,38 @@
 package com.lius.sudo.activity;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.lius.sudo.adapter.ArchiveRvAdapter;
+import com.lius.sudo.database.SudokuOpenHelper;
 import com.lius.sudo.model.ArchiveDate;
 import com.lius.sudo.MainActivity;
 import com.lius.sudo.adapter.MyAdapter;
 import com.lius.sudo.R;
 import com.lius.sudo.DB.DBUtil;
+import com.lius.sudo.model.ArchiveRvData;
+import com.lius.sudo.model.GameDataDBModel;
+import com.lius.sudo.utilities.Util;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,70 +40,94 @@ import java.util.List;
  */
 public class ArchiveActivity extends AppCompatActivity{
 
-    private ListView archive_listview;
-    private List<ArchiveDate> archive_list;
-    private MyAdapter myAdapter;
-    private Button backButton;
+    private Toolbar toolbar;
+
+    private RecyclerView archiveRv;
+    private ArchiveRvAdapter adapter;
+
+    private List<ArchiveRvData> datas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.archive_activity_layout);
+        setContentView(R.layout.activity_archive);
+        findViews();
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        initView();
+        setListeners();
 
+    }
 
-        archive_list= DBUtil.getArchiveDataFromDB(this);
+    private void initView(){
+        datas=getArchiveDatas();
+        adapter=new ArchiveRvAdapter(this,datas);
+        archiveRv.setLayoutManager(new LinearLayoutManager(this));
+        archiveRv.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+        archiveRv.setAdapter(adapter);
+    }
 
-
-        myAdapter=new MyAdapter(this,archive_list);
-
-
-        archive_listview=(ListView)findViewById(R.id.archive_listview);
-        archive_listview.setAdapter(myAdapter);
-        archive_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                ArchiveDate ad=archive_list.get(i);
-                String level=ad.getLevel();
-                switch (level){
-                    case "入门级":
-                        StartActivity.level=1;
-                        break;
-                    case "初级":
-                        StartActivity.level=2;
-                        break;
-                    case "普通":
-                        StartActivity.level=3;
-                        break;
-                    case "高级":
-                        StartActivity.level=4;
-                        break;
-                    case "骨灰级":
-                        StartActivity.level=5;
-                        break;
-                    default:
-                        break;
+    private List<ArchiveRvData> getArchiveDatas(){
+        SudokuOpenHelper openHelper=new SudokuOpenHelper(this,"Sudoku.db",null,1);
+        SQLiteDatabase db=openHelper.getReadableDatabase();
+        Cursor cursor=db.query("Archive",null,null,null,null,null,null);
+        int id;
+        String time;
+        String level;
+        byte[] gameData;
+        List<ArchiveRvData> datas=new ArrayList<>();
+        if(cursor.moveToFirst()){
+            do{
+                id=cursor.getInt(cursor.getColumnIndex("id"));
+                time=cursor.getString(cursor.getColumnIndex("archive_time"));
+                gameData=cursor.getBlob(cursor.getColumnIndex("game_data"));
+                ByteArrayInputStream bais=new ByteArrayInputStream(gameData);
+                try {
+                    ObjectInputStream ois=new ObjectInputStream(bais);
+                    GameDataDBModel gddm=(GameDataDBModel)ois.readObject();
+                    level= Util.getGameLevelText(gddm.getLevel());
+                    datas.add(new ArchiveRvData(id,time,level));
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                String data=ad.getNumber()+ad.getColor();
-                Intent intent=new Intent(ArchiveActivity.this,MainActivity.class);
-                intent.putExtra("flag","1");
-                intent.putExtra("data",data);
-                intent.putExtra("consumetime",ad.getConsumeIntTime());
-                intent.putExtra("id",ad.getId());
-               // Log.d("ArchiveActivity","数据为"+data);
-                startActivity(intent);
+            }while (cursor.moveToNext());
+        }
+        return datas;
+    }
+
+
+    private void findViews(){
+        archiveRv=(RecyclerView)findViewById(R.id.archive_rv);
+        toolbar=(Toolbar)findViewById(R.id.toolbar);
+    }
+
+
+    private void setListeners(){
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 finish();
             }
         });
-        backButton=(Button)findViewById(R.id.back_button);
-        backButton.setOnClickListener(new View.OnClickListener() {
+        adapter.setOnItemClickListener(new ArchiveRvAdapter.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(int position) {
+                Intent intent=new Intent(ArchiveActivity.this,GameActivity.class);
+                Bundle bundle=new Bundle();
+                bundle.putString("gameType","archiveGame");
+                bundle.putInt("archiveId",datas.get(position).getArchiveId());
+                intent.putExtra("extra",bundle);
+                startActivity(intent);
                 finish();
             }
         });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_archive,menu);
+        return true;
+    }
 }
 
 

@@ -12,39 +12,35 @@ import com.lius.sudo.R;
 import com.lius.sudo.utilities.Util;
 
 /**
- * Created by UsielLau on 2017/9/20 0020 17:29.
+ * Created by UsielLau on 2017/9/21 0021 9:37.
  */
 
-public class GameSuccessDialog extends ColorDialogBase {
+public class InquiryDialog extends ColorDialogBase {
 
     private Context context;
+
+    private String positiveBtnText;
+    private String negativeBtnText;
+
 
     private OnClickDialogBtnListener positiveBtnListener;
     private OnClickDialogBtnListener negativeBtnListener;
 
 
-    public GameSuccessDialog(@NonNull Context context) {
+    public InquiryDialog(@NonNull Context context) {
         super(context);
         this.context=context;
-
-    }
-
-    @Override
-    public void setMessageText(String msg) {
-        super.setMessageText(msg);
-        msgTv.setText("解题成功！是否加入排行榜？");
     }
 
     @Override
     void setLogoIv(ImageView logoIv) {
-        logoIv.setImageResource(R.drawable.ic_success);
+        logoIv.setImageResource(R.drawable.ic_help);
     }
-
 
     @Override
     void addButtons(LinearLayout btnGroupLayout) {
         Button positiveBtn=getDefaultButton();
-        positiveBtn.setText("是");
+        positiveBtn.setText(positiveBtnText);
         positiveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,7 +51,7 @@ public class GameSuccessDialog extends ColorDialogBase {
         });
 
         Button negativeBtn=getDefaultButton();
-        negativeBtn.setText("否");
+        negativeBtn.setText(negativeBtnText);
         negativeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,11 +63,16 @@ public class GameSuccessDialog extends ColorDialogBase {
 
         btnGroupLayout.addView(positiveBtn);
         btnGroupLayout.addView(negativeBtn);
+
+
     }
 
-    @Override
-    int getDialogColor() {
-        return context.getResources().getColor(R.color.green);
+    public void setPositiveBtnText(String positiveBtnText) {
+        this.positiveBtnText = positiveBtnText;
+    }
+
+    public void setNegativeBtnText(String negativeBtnText) {
+        this.negativeBtnText = negativeBtnText;
     }
 
     public void setPositiveBtnListener(OnClickDialogBtnListener positiveBtnListener) {
@@ -80,5 +81,10 @@ public class GameSuccessDialog extends ColorDialogBase {
 
     public void setNegativeBtnListener(OnClickDialogBtnListener negativeBtnListener) {
         this.negativeBtnListener = negativeBtnListener;
+    }
+
+    @Override
+    int getDialogColor() {
+        return context.getResources().getColor(R.color.colorAccent);
     }
 }
