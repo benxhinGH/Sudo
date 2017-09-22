@@ -1,4 +1,4 @@
-package com.lius.sudo.Dialog;
+package com.lius.sudo.dialog;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

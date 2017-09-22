@@ -1,16 +1,14 @@
-package com.lius.sudo.Dialog;
+package com.lius.sudo.dialog;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.lius.sudo.R;
-import com.lius.sudo.utilities.Util;
 
 /**
  * Created by UsielLau on 2017/9/20 0020 17:29.

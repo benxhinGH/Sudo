@@ -10,8 +10,8 @@ import android.view.View;
 import android.widget.Button;
 
 
-import com.lius.sudo.Dialog.AboutDialog;
-import com.lius.sudo.Dialog.OnClickDialogBtnListener;
+import com.lius.sudo.dialog.AboutDialog;
+import com.lius.sudo.dialog.OnClickDialogBtnListener;
 import com.lius.sudo.R;
 
 /**

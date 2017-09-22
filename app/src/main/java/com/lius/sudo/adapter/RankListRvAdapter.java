@@ -37,7 +37,7 @@ public class RankListRvAdapter extends RecyclerView.Adapter<RankListRvAdapter.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.rankTv.setText(datas.get(position).getRank());
+        holder.rankTv.setText(String.valueOf(datas.get(position).getRank()));
         holder.playerNameTv.setText(datas.get(position).getPlayerName());
         holder.gameTimeTv.setText(datas.get(position).getGameTime());
     }

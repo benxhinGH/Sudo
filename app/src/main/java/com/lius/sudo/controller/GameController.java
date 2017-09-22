@@ -1,6 +1,5 @@
 package com.lius.sudo.controller;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -11,16 +10,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.lius.sudo.Dialog.ColorDialogBase;
-import com.lius.sudo.Dialog.GameFailedDialog;
-import com.lius.sudo.Dialog.GameSuccessDialog;
-import com.lius.sudo.Dialog.GetUserNameDialog;
-import com.lius.sudo.Dialog.OnClickDialogBtnListener;
+import com.lius.sudo.dialog.GameFailedDialog;
+import com.lius.sudo.dialog.GameSuccessDialog;
+import com.lius.sudo.dialog.GetUserNameDialog;
+import com.lius.sudo.dialog.OnClickDialogBtnListener;
 import com.lius.sudo.activity.FinishedActivity;
 import com.lius.sudo.business.MyTimer;
 import com.lius.sudo.business.SudokuGenerator;

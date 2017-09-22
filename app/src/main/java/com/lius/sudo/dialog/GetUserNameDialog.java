@@ -1,18 +1,13 @@
-package com.lius.sudo.Dialog;
+package com.lius.sudo.dialog;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-
-import com.lius.sudo.R;
 
 /**
  * Created by UsielLau on 2017/9/22 0022 12:00.
