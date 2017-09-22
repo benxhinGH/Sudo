@@ -1,6 +1,8 @@
 package com.lius.sudo.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,6 +28,8 @@ import com.lius.sudo.business.MyTimer;
 import com.lius.sudo.controller.GameController;
 import com.lius.sudo.utilities.Util;
 import com.lius.sudo.view.SudokuView;
+
+import java.lang.reflect.Method;
 
 /**
  * Created by UsielLau on 2017/9/14 0014 22:45.
@@ -198,9 +203,34 @@ public class GameActivity extends AppCompatActivity {
     private void checkFloatWindowPermission(){
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
             if (!Settings.canDrawOverlays(this)) {
-                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivityForResult(intent, 0);
+                Toast.makeText(this, "请打开悬浮窗权限", Toast.LENGTH_SHORT).show();
+                gotoMeizuPermission();
+            }
+        }
+
+    }
+
+    private void gotoMeizuPermission() {
+        Intent intent = new Intent("com.meizu.safe.security.SHOW_APPSEC");
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+        intent.putExtra("packageName", getPackageName());
+        try {
+            startActivityForResult(intent, 1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    @Override
+    //处理回调
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if(Build.VERSION.SDK_INT>23)
+            if (Settings.canDrawOverlays(this)) {
+                Log.i("GameActivity", "onActivityResult granted");
             }
         }
     }

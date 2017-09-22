@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.lius.sudo.R;
 import com.lius.sudo.utilities.Util;
@@ -71,6 +72,11 @@ public class GameFailedDialog extends ColorDialogBase {
     @Override
     int getDialogColor() {
         return context.getResources().getColor(R.color.red);
+    }
+
+    @Override
+    boolean setContentView(RelativeLayout contentLayout) {
+        return false;
     }
 
     public void setPositiveListener(OnClickDialogBtnListener positiveListener) {

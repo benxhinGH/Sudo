@@ -14,6 +14,13 @@ public class SudokuOpenHelper extends SQLiteOpenHelper {
             "id integer primary key autoincrement," +
             "archive_time text," +
             "game_data BLOB)";
+    private static final String CREATE_RANK_TABLE="create table Rank(" +
+            "id integer primary key autoincrement," +
+            "player_name text," +
+            "level int," +
+            "game_time text," +
+            "game_seconds_time integer," +
+            "play_time text)";
 
 
     public SudokuOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -23,6 +30,7 @@ public class SudokuOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_ARCHIVE_TABLE);
+        db.execSQL(CREATE_RANK_TABLE);
     }
 
     @Override

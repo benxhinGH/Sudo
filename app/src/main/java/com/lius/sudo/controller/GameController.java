@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.ActivityCompat;
@@ -16,7 +19,9 @@ import android.widget.Toast;
 import com.lius.sudo.Dialog.ColorDialogBase;
 import com.lius.sudo.Dialog.GameFailedDialog;
 import com.lius.sudo.Dialog.GameSuccessDialog;
+import com.lius.sudo.Dialog.GetUserNameDialog;
 import com.lius.sudo.Dialog.OnClickDialogBtnListener;
+import com.lius.sudo.activity.FinishedActivity;
 import com.lius.sudo.business.MyTimer;
 import com.lius.sudo.business.SudokuGenerator;
 import com.lius.sudo.database.SudokuOpenHelper;
@@ -42,6 +47,8 @@ public class GameController {
 
     private final int SUDOKU_GENERATE_FINISHED=0;
     private final int UPDATE_TIMER=1;
+    private final int GET_USERNAME=2;
+
 
     private GameSuccessDialog gameSuccessDialog;
     private GameFailedDialog gameFailedDialog;
@@ -79,6 +86,20 @@ public class GameController {
                 case UPDATE_TIMER:
                     String time=(String)msg.obj;
                     gameTimeTv.setText(time);
+                    break;
+                case GET_USERNAME:
+                    String username=(String)msg.obj;
+                    if(username==null){
+                        username="未知玩家";
+                    }
+                    saveToRankList(username);
+                    Intent intent=new Intent(context,FinishedActivity.class);
+                    Bundle bundle=new Bundle();
+                    bundle.putInt("level",level);
+                    bundle.putString("time",myTimer.getTime());
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+                    gameExit();
                     break;
                 default:
                     break;
@@ -233,6 +254,7 @@ public class GameController {
     }
 
     private void gameSuccess(){
+        myTimer.stop();
         showGameSuccessDialog();
     }
 
@@ -247,15 +269,49 @@ public class GameController {
         dialog.setPositiveBtnListener(new OnClickDialogBtnListener() {
             @Override
             public void onClick() {
-                Toast.makeText(context, "positive", Toast.LENGTH_SHORT).show();
+                showGetUserNameDialog();
                 dialog.dismiss();
             }
         });
         dialog.setNegativeBtnListener(new OnClickDialogBtnListener() {
             @Override
             public void onClick() {
-                Toast.makeText(context, "negative", Toast.LENGTH_SHORT).show();
+                Intent intent=new Intent(context, FinishedActivity.class);
+                Bundle bundle=new Bundle();
+                bundle.putInt("level",level);
+                bundle.putString("time",myTimer.getTime());
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+                gameExit();
                 dialog.dismiss();
+            }
+        });
+    }
+
+    private void showGetUserNameDialog(){
+        final GetUserNameDialog mDialog=new GetUserNameDialog(context);
+        mDialog.show();
+        mDialog.setPositiveBtnText("确定");
+        mDialog.setPositiveBtnListener(new OnClickDialogBtnListener() {
+            @Override
+            public void onClick() {
+                mDialog.dismiss();
+            }
+        });
+        mDialog.setNegativeBtnText("忽略");
+        mDialog.setNegativeBtnListener(new OnClickDialogBtnListener() {
+            @Override
+            public void onClick() {
+                mDialog.dismiss();
+            }
+        });
+        mDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                String userName=mDialog.getUserName();
+                Message msg=handler.obtainMessage(GET_USERNAME);
+                msg.obj=userName;
+                handler.sendMessage(msg);
             }
         });
     }
@@ -302,6 +358,22 @@ public class GameController {
         }
     }
 
+    private void saveToRankList(String username){
+        SudokuOpenHelper openHelper=new SudokuOpenHelper(context,"Sudoku.db",null,1);
+        SQLiteDatabase db=openHelper.getWritableDatabase();
+        ContentValues contentValues=new ContentValues();
+        contentValues.put("player_name",username);
+        contentValues.put("level",level);
+        contentValues.put("game_time",myTimer.getTime());
+        contentValues.put("game_seconds_time",myTimer.getTimeSeconds());
+        contentValues.put("play_time",Util.getSystemTime());
+        long res=db.insert("Rank",null,contentValues);
+        if(res!=-1){
+            Toast.makeText(context, "加入排行榜成功", Toast.LENGTH_SHORT).show();
+        }else {
+            Toast.makeText(context, "加入排行榜失败", Toast.LENGTH_SHORT).show();
+        }
+    }
 
 
     private boolean checkAnswer(){

@@ -9,28 +9,17 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import com.lius.sudo.adapter.ArchiveRvAdapter;
 import com.lius.sudo.database.SudokuOpenHelper;
-import com.lius.sudo.model.ArchiveDate;
-import com.lius.sudo.MainActivity;
-import com.lius.sudo.adapter.MyAdapter;
 import com.lius.sudo.R;
-import com.lius.sudo.DB.DBUtil;
 import com.lius.sudo.model.ArchiveRvData;
 import com.lius.sudo.model.GameDataDBModel;
 import com.lius.sudo.utilities.Util;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;

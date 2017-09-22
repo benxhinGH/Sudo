@@ -13,64 +13,16 @@
         <!--toolbar导航按钮颜色-->
         <item name="colorControlNormal">#ffffff</item>
     </style>
-    <style name="MyTitleBackground">
-        <item name="android:background">@color/purple</item>
-    </style>
-    <style name="MyTitle" parent="android:Theme">
-        <item name="android:windowTitleSize">50dp</item>
-        <item name="android:windowTitleBackgroundStyle">@style/MyTitleBackground</item>
-    </style>
 
-
-
-
-    <style name="loading_dialog" parent="android:style/Theme.Dialog">
-        <item name="android:windowFrame">@null</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowBackground">@drawable/shape_loadingdialog</item>
-        <item name="android:windowIsFloating">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-    </style>
-
-
-    <style name="color_dialog" parent="android:Theme.Dialog">
-        <item name="android:windowIsFloating">true</item>
-        <item name="android:windowIsTranslucent">false</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowFullscreen">false</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowAnimationStyle">@null</item>
-        <item name="android:backgroundDimEnabled">true</item>
-        <item name="android:backgroundDimAmount">0.4</item>
-    </style>
-
-    <style name="my_color_dialog" parent="Theme.AppCompat.Dialog">
+    <style name="color_dialog" parent="Theme.AppCompat.Dialog">
         <!--无标题栏-->
         <item name="windowNoTitle">true</item>
         <!--背景透明-->
         <item name="android:windowBackground">@android:color/transparent</item>
-
     </style>
 
 
-
-    <style name="MyDialog" parent="android:Theme.Dialog">
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowFrame">@null</item>
-        <item name="android:windowIsFloating">true</item>
-    </style>
-    <style name="myDialogBtn">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:textColor">#ffffff</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:background">@null</item>
-        <item name="android:padding">8dp</item>
-    </style>
-
-    <style name="btnActivityMainInterface">
+    <style name="btnActivityMain">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:minWidth">180dp</item>
@@ -79,30 +31,12 @@
         <item name="android:background">@drawable/btn_bg</item>
     </style>
     <style name="btnDialog">
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">20sp</item>
         <item name="android:minWidth">150dp</item>
         <item name="android:background">@drawable/btn_bg</item>
     </style>
-    <style name="rankTvStyle">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">#000000</item>
-        <item name="android:layout_centerVertical">true</item>
-        <item name="android:layout_margin">10dp</item>
-    </style>
-    <style name="rankItemStyle">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:textSize">20sp</item>
-        <item name="android:textColor">#000000</item>
-        <item name="android:layout_centerVertical">true</item>
-        <item name="android:layout_margin">10dp</item>
-        <item name="android:maxWidth">35dp</item>
-    </style>
+
 
 </resources>

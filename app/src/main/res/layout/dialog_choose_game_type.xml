@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/dialog_bg"
     android:gravity="center"
-    android:padding="30dp">
+    android:padding="20dp">
     <Button
         android:id="@+id/new_game_btn"
         style="@style/btnDialog"

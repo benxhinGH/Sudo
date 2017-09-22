@@ -18,12 +18,12 @@ public class WelcomeActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.welcome_layout);
+        setContentView(R.layout.activity_welcome);
         Timer timer=new Timer();
         TimerTask task=new TimerTask() {
             @Override
             public void run() {
-                Intent intent=new Intent(WelcomeActivity.this,MainInterfaceActivity.class);
+                Intent intent=new Intent(WelcomeActivity.this,MainActivity.class);
                 startActivity(intent);
                 finish();
             }

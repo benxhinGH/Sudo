@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.lius.sudo.R;
 import com.lius.sudo.utilities.Util;
@@ -18,6 +19,9 @@ import com.lius.sudo.utilities.Util;
 public class InquiryDialog extends ColorDialogBase {
 
     private Context context;
+
+    private Button positiveBtn;
+    private Button negativeBtn;
 
     private String positiveBtnText;
     private String negativeBtnText;
@@ -39,7 +43,7 @@ public class InquiryDialog extends ColorDialogBase {
 
     @Override
     void addButtons(LinearLayout btnGroupLayout) {
-        Button positiveBtn=getDefaultButton();
+        positiveBtn=getDefaultButton();
         positiveBtn.setText(positiveBtnText);
         positiveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,7 +54,7 @@ public class InquiryDialog extends ColorDialogBase {
             }
         });
 
-        Button negativeBtn=getDefaultButton();
+        negativeBtn=getDefaultButton();
         negativeBtn.setText(negativeBtnText);
         negativeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,11 +72,11 @@ public class InquiryDialog extends ColorDialogBase {
     }
 
     public void setPositiveBtnText(String positiveBtnText) {
-        this.positiveBtnText = positiveBtnText;
+        positiveBtn.setText(positiveBtnText);
     }
 
     public void setNegativeBtnText(String negativeBtnText) {
-        this.negativeBtnText = negativeBtnText;
+        negativeBtn.setText(negativeBtnText);
     }
 
     public void setPositiveBtnListener(OnClickDialogBtnListener positiveBtnListener) {
@@ -86,5 +90,10 @@ public class InquiryDialog extends ColorDialogBase {
     @Override
     int getDialogColor() {
         return context.getResources().getColor(R.color.colorAccent);
+    }
+
+    @Override
+    boolean setContentView(RelativeLayout contentLayout) {
+        return false;
     }
 }

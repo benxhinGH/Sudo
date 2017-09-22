@@ -27,6 +27,7 @@ import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.lius.sudo.R;
@@ -48,6 +49,7 @@ public abstract class ColorDialogBase extends Dialog {
     private LinearLayout triangleLayout;
     protected TextView msgTv;
     private LinearLayout btnGroupLayout;
+    private RelativeLayout contentLayout;
 
     /**
      * 对话框主题颜色,默认为蓝色
@@ -69,7 +71,7 @@ public abstract class ColorDialogBase extends Dialog {
 
 
     public ColorDialogBase(@NonNull Context context) {
-        super(context,R.style.my_color_dialog);
+        super(context,R.style.color_dialog);
         this.context=context;
         getAnimations();
     }
@@ -110,6 +112,7 @@ public abstract class ColorDialogBase extends Dialog {
         triangleLayout=(LinearLayout)dialogView.findViewById(R.id.triangle_layout);
         msgTv=(TextView)dialogView.findViewById(R.id.msg_tv);
         btnGroupLayout=(LinearLayout)dialogView.findViewById(R.id.btn_group_layout);
+        contentLayout=(RelativeLayout)dialogView.findViewById(R.id.content_layout);
     }
 
     /**
@@ -125,6 +128,9 @@ public abstract class ColorDialogBase extends Dialog {
         setLogoIv(logoIv);
         setTopLayoutBackground();
         setTriangleLayout();
+        if(setContentView(contentLayout)){
+
+        }
         addButtons(btnGroupLayout);
         setBtnsBackground();
         setBtnGroupLayoutBackground();
@@ -234,6 +240,8 @@ public abstract class ColorDialogBase extends Dialog {
         button.setLayoutParams(params);
         return button;
     }
+
+    abstract boolean setContentView(RelativeLayout contentLayout);
 
 
     @Override
